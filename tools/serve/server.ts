@@ -26,6 +26,8 @@ export interface ServeOptions {
   pack: string;
   data: string;       // folder with items/, attempts/, meta/
   dist: string;       // folder with index.html
+  /** The page itself (single-file build, tools/serve/standalone.ts); `dist` is then unused. */
+  html?: Uint8Array;
   /** Pack folder: run the course-source sync at start and hourly if <data>/sync.yaml exists (12-sync.md). Off in tests. */
   syncPack?: string;
 }
@@ -190,8 +192,9 @@ async function importFile(o: ServeOptions, body: Body): Promise<{ added: number;
 async function page(o: ServeOptions, req: IncomingMessage, res: ServerResponse, path: string): Promise<void> {
   if (req.method !== "GET" && req.method !== "HEAD") throw new HttpError(405, "method");
   if (path !== "/" && path !== "/index.html") throw new HttpError(404, "not found");
-  let html: Buffer;
-  try {
+  let html: Uint8Array;
+  if (o.html) html = o.html;
+  else try {
     html = await readFile(join(o.dist, "index.html")); // read per request: a new build shows after reload
   } catch {
     throw new HttpError(404, "no build: run npm run build:local");

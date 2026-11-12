@@ -13,6 +13,7 @@
     "build:claude": "vite build && node tools/build/postprocess.ts dist/claude/index.html",
     "build:claude:frozen": "VITE_FROZEN=${VITE_FROZEN:-$(date +%d.%m.%Y)} npm run build:claude",
     "build:local": "vite build --mode pc",
+    "build:bin": "node tools/serve/build-bin.ts",
     "build:apk": "tools/apk/build.sh",
     "sync": "node tools/sync/sync.ts",
     "check:pack": "node tools/pack/check-pack.ts"
