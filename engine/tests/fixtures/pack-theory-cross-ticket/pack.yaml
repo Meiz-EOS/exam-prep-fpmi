@@ -1,0 +1,6 @@
+id: pack-theory-cross-ticket
+title: Theory test
+subjects:
+  - { id: math, name: Math }
+  - { id: phys, name: Physics }
+exams: []

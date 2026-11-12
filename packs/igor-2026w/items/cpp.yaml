@@ -1,0 +1,33 @@
+- group: C++ задачи
+  kind: задача-cpp
+  items:
+    - id: cpp-dot
+      title: DotProduct
+      soft: 2026-10-20
+      hard: 2026-10-28
+    - id: cpp-compare
+      title: NumbersCompare
+      soft: 2026-10-20
+      hard: 2026-10-28
+    - id: cpp-cyclic
+      title: CyclicShift
+      soft: 2026-10-20
+      hard: 2026-10-28
+    - id: cpp-stack
+      title: Stack
+      note: 02-structured, 50 баллов
+    - id: cpp-string
+      title: String
+      soft: 2026-11-11
+      note: мягкий дедлайн; потом устная защита
+    - id: cpp-mult
+      title: multiplication
+      note: ОБЯЗАТЕЛЬНА для зачёта курса; жёсткий срок — в Manytask
+    - id: cpp-bigint
+      title: BigInteger
+      soft: 2026-11-29
+      note: часть тестов на скорость
+    - id: cpp-rational
+      title: Rational
+      soft: 2026-11-30
+      note: на своём BigInteger, защита вместе с ним

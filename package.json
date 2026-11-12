@@ -1,0 +1,40 @@
+{
+  "name": "zachetka",
+  "private": true,
+  "license": "MIT",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "tools/serve/open.sh",
+    "serve": "node tools/serve/server.ts",
+    "test": "vitest run",
+    "check": "tsc --noEmit",
+    "build:claude": "vite build && node tools/build/postprocess.ts dist/claude/index.html",
+    "build:claude:frozen": "VITE_FROZEN=${VITE_FROZEN:-$(date +%d.%m.%Y)} npm run build:claude",
+    "build:local": "vite build --mode pc",
+    "build:apk": "tools/apk/build.sh",
+    "sync": "node tools/sync/sync.ts",
+    "check:pack": "node tools/pack/check-pack.ts"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.6.0",
+    "@preact/preset-vite": "^2.10.6",
+    "@types/node": "^26.6.6",
+    "happy-dom": "^21.0.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vite-plugin-singlefile": "^2.3.4",
+    "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.6.0",
+    "@capacitor/core": "8.6.0",
+    "@capacitor/filesystem": "8.1.5",
+    "@capacitor/share": "8.0.3",
+    "katex": "^0.19.1",
+    "preact": "^11.2.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  }
+}

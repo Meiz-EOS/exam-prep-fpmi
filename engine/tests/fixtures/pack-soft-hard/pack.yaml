@@ -1,0 +1,6 @@
+id: demo-pack
+title: Demo
+subjects:
+  - id: math
+    name: Math
+exams: []

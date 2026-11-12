@@ -1,0 +1,91 @@
+# Signed APK of your fork (docs/architecture/13-classmates.md#ci-apk, 11-apk.md#ci).
+# Runs on a tag v* (APK goes to the GitHub Release of the tag) or by hand (APK as a workflow artifact).
+# Needs four repository Secrets, made once from your own keystore:
+#   ZACH_KEYSTORE_B64       base64 -w0 release.jks
+#   ZACH_KEYSTORE_PASSWORD  ZACH_KEY_ALIAS  ZACH_KEY_PASSWORD
+# Pack: repository variable ZACH_PACK (e.g. packs/my-pack); empty = the only folder in packs/.
+name: apk
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ZACH_PACK: ${{ vars.ZACH_PACK }}
+    steps:
+      - name: Check signing secrets
+        env:
+          B64: ${{ secrets.ZACH_KEYSTORE_B64 }}
+          SP: ${{ secrets.ZACH_KEYSTORE_PASSWORD }}
+          KA: ${{ secrets.ZACH_KEY_ALIAS }}
+          KP: ${{ secrets.ZACH_KEY_PASSWORD }}
+        run: |
+          missing=""
+          [ -n "$B64" ] || missing="$missing ZACH_KEYSTORE_B64"
+          [ -n "$SP" ] || missing="$missing ZACH_KEYSTORE_PASSWORD"
+          [ -n "$KA" ] || missing="$missing ZACH_KEY_ALIAS"
+          [ -n "$KP" ] || missing="$missing ZACH_KEY_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::No signing key. Add repository Secrets:$missing (Settings → Secrets and variables → Actions; how to make a key: docs/architecture/11-apk.md#ci). An unsigned APK is not built."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools platforms;android-36 build-tools;36.0.0"
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+
+      - name: Keystore from Secrets
+        env:
+          B64: ${{ secrets.ZACH_KEYSTORE_B64 }}
+        run: |
+          echo "$B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          echo "ZACH_KEYSTORE=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+      - name: Build signed APK
+        env:
+          ZACH_KEYSTORE_PASSWORD: ${{ secrets.ZACH_KEYSTORE_PASSWORD }}
+          ZACH_KEY_ALIAS: ${{ secrets.ZACH_KEY_ALIAS }}
+          ZACH_KEY_PASSWORD: ${{ secrets.ZACH_KEY_PASSWORD }}
+        run: npm run build:apk
+
+      - name: Attach to the release of the tag
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/apk-out/*.apk
+
+      - name: Keep as a workflow artifact
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: dist/apk-out/*.apk
+          retention-days: 14
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"

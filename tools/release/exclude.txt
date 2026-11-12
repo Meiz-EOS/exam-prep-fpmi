@@ -1,0 +1,2 @@
+# Paths (shell globs) that stay in the private archive and are not published (13-classmates.md#scrub).
+docs/architecture/tasks/W*.md

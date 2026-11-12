@@ -1,0 +1,3 @@
+tickets:
+  - { id: exam-a, title: Exam A, confidence: sure, includes: [math-a] }
+  - { id: exam-b, title: Exam B, confidence: likely, includes: [] }

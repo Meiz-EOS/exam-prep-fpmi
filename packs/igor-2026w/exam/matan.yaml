@@ -1,0 +1,49 @@
+# Экзаменационные билеты (прогноз 09.11).
+# includes — билеты-теоремы из tickets/matan.yaml, входящие в этот билет.
+tickets:
+  - { id: matan-b-01, title: "Точная верхняя (нижняя) грань: существование и единственность", confidence: sure, includes: [matan-t-0104, matan-t-0105, matan-t-0107, matan-t-0108, matan-t-0109, matan-t-0110] }
+  - { id: matan-b-02, title: "Счётность ℚ, несчётность ℝ", confidence: sure, includes: [matan-t-0101, matan-t-0102, matan-t-0410, matan-t-0411] }
+  - { id: matan-b-03, title: "Аксиома Архимеда, расширенная прямая, промежутки", confidence: ours, includes: [matan-t-0106, matan-t-0111, matan-t-0112, matan-t-0114] }
+  - { id: matan-b-04, title: "Теорема Кантора о вложенных отрезках", confidence: sure, includes: [matan-t-0209] }
+  - { id: matan-b-05, title: "Предел последовательности: единственность, ограниченность сходящейся", confidence: sure, includes: [matan-t-0201, matan-t-0202, matan-t-0203] }
+  - { id: matan-b-06, title: "Свойства пределов, связанные с неравенствами", confidence: sure, includes: [matan-t-0204, matan-t-0205] }
+  - { id: matan-b-07, title: "Арифметические операции со сходящимися последовательностями", confidence: sure, includes: [matan-t-0206] }
+  - { id: matan-b-08, title: "Теорема Вейерштрасса о монотонной ограниченной последовательности. Число e", confidence: sure, includes: [matan-t-0113, matan-t-0207, matan-t-0208] }
+  - { id: matan-b-09, title: "Бесконечно малые и бесконечно большие последовательности", confidence: doubtful, includes: [matan-t-0210] }
+  - { id: matan-b-10, title: "Подпоследовательности и частичные пределы, критерий частичного предела", confidence: sure, includes: [matan-t-0214] }
+  - { id: matan-b-11, title: "Теорема Больцано–Вейерштрасса", confidence: sure, includes: [matan-t-0211] }
+  - { id: matan-b-12, title: "Критерий Коши для последовательностей", confidence: sure, includes: [matan-t-0212] }
+  - { id: matan-b-13, title: "Верхний и нижний пределы (три определения)", confidence: sure, includes: [matan-t-0213] }
+  - { id: matan-b-14, title: "Открытые и замкнутые множества прямой, их свойства", confidence: sure, includes: [matan-t-0103, matan-t-0301, matan-t-0302, matan-t-0303] }
+  - { id: matan-b-15, title: "Лемма Гейне–Бореля", confidence: ours, includes: [matan-t-0304] }
+  - { id: matan-b-16, title: "Предел функции по Коши и по Гейне, эквивалентность", confidence: sure, includes: [matan-t-0401] }
+  - { id: matan-b-17, title: "Свойства пределов функции, предел композиции", confidence: likely, includes: [matan-t-0416] }
+  - { id: matan-b-18, title: "Критерий Коши существования предела функции", confidence: sure, includes: [matan-t-0402] }
+  - { id: matan-b-19, title: "Односторонние пределы монотонных функций", confidence: sure, includes: [matan-t-0403] }
+  - { id: matan-b-20, title: "Непрерывность в точке, сложной функции; эквивалентные условия непрерывности", confidence: sure, includes: [matan-t-0404, matan-t-0405, matan-t-0406] }
+  - { id: matan-b-21, title: "Точки разрыва и их классификация; разрывы монотонной функции", confidence: likely, includes: [matan-t-0417, matan-t-0418] }
+  - { id: matan-b-22, title: "Ограниченность и достижение граней функции, непрерывной на отрезке", confidence: sure, includes: [matan-t-0407] }
+  - { id: matan-b-23, title: "Теорема о промежуточных значениях", confidence: sure, includes: [matan-t-0408] }
+  - { id: matan-b-24, title: "Теорема об обратной функции", confidence: sure, includes: [matan-t-0409] }
+  - { id: matan-b-25, title: "Равномерная непрерывность, теорема Кантора", confidence: likely, includes: [matan-t-0412] }
+  - { id: matan-b-26, title: "Показательная функция, непрерывность элементарных функций", confidence: likely, includes: [matan-t-0413] }
+  - { id: matan-b-27, title: "Замечательные пределы; сравнение функций (o, O, эквивалентность)", confidence: likely, includes: [matan-t-0414, matan-t-0415] }
+  - { id: matan-b-28, title: "Производная и дифференцируемость, дифференциал, геометрический смысл", confidence: likely, includes: [matan-t-0501, matan-t-0502] }
+  - { id: matan-b-29, title: "Производные суммы, произведения, частного, композиции, обратной функции", confidence: likely, includes: [matan-t-0503, matan-t-0504] }
+  - { id: matan-b-30, title: "Параметрически заданные функции; инвариантность формы первого дифференциала", confidence: likely, includes: [matan-t-0518, matan-t-0519] }
+  - { id: matan-b-31, title: "Производные высших порядков, формула Лейбница, второй дифференциал", confidence: likely, includes: [matan-t-0511] }
+  - { id: matan-b-32, title: "Теоремы Ферма, Ролля, Лагранжа, Коши", confidence: likely, includes: [matan-t-0505, matan-t-0506, matan-t-0507, matan-t-0508] }
+  - { id: matan-b-33, title: "Теорема Дарбу о промежуточных значениях производной", confidence: likely, includes: [matan-t-0520] }
+  - { id: matan-b-34, title: "Правила Лопиталя (0/0 и ∞/∞)", confidence: likely, includes: [matan-t-0510] }
+  - { id: matan-b-35, title: "Формула Тейлора с остаточным членом в форме Пеано, основные разложения", confidence: likely, includes: [matan-t-0512] }
+  - { id: matan-b-36, title: "Остаточный член в форме Лагранжа; иррациональность e", confidence: likely, includes: [matan-t-0513] }
+  - { id: matan-b-37, title: "Монотонность и экстремумы: условия через производные", confidence: likely, includes: [matan-t-0509] }
+  - { id: matan-b-38, title: "Выпуклость: критерии, точки перегиба, неравенство Йенсена", confidence: likely, includes: [matan-t-0514, matan-t-0515] }
+  - { id: matan-b-39, title: "Асимптоты", confidence: likely, includes: [matan-t-0419] }
+  - { id: matan-b-40, title: "Неравенства Гёльдера и Минковского", confidence: ours, includes: [matan-t-0516] }
+  - { id: matan-b-41, title: "Первообразная, неопределённый интеграл", confidence: ours, includes: [matan-t-0517] }
+  - { id: matan-b-42, title: "Суммы и интегралы Дарбу, интеграл Римана, критерий интегрируемости", confidence: ours, includes: [matan-t-0601, matan-t-0602, matan-t-0603, matan-t-0605] }
+  - { id: matan-b-43, title: "Свойства интеграла, аддитивность, интегрируемость композиции, суммы Римана", confidence: ours, includes: [matan-t-0604, matan-t-0608, matan-t-0609] }
+  - { id: matan-b-44, title: "Интеграл с переменным верхним пределом, формула Ньютона–Лейбница, формула Валлиса", confidence: ours, includes: [matan-t-0606, matan-t-0607] }
+  - { id: matan-b-45, title: "Комплексные числа: тригонометрическая форма, корни, сходимость", confidence: ours, includes: [matan-t-0701, matan-t-0702] }
+  - { id: matan-b-46, title: "Основная теорема алгебры; комплексная экспонента", confidence: ours, includes: [matan-t-0703, matan-t-0704] }

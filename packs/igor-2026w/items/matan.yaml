@@ -1,0 +1,261 @@
+# Матан (Гусев, Редкозубов): задавальник 2026, стр. 20–25.
+# Задачи — по таблице «Рекомендации по решению по неделям». С1/С2 — сборник Кудрявцева, т. 1/2; Т.N — задачи из задавальника.
+
+- group: Матан задание 1
+  kind: дз
+  items:
+    - id: matan1-submit
+      title: "Задание 1: сдать тетрадь"
+      soft: 2026-10-06
+      hard: 2026-10-12
+      note: задавальник стр. 20–22, всего 72+7*
+- group: Матан коллоквиум
+  kind: устная
+  items:
+    - id: matan-colloq
+      title: Коллоквиум
+      soft: 2026-10-19
+- group: Матан задание 2
+  kind: дз
+  items:
+    - id: matan2-submit
+      title: "Задание 2: сдать тетрадь"
+      soft: 2026-11-23
+      hard: 2026-11-30
+      note: задавальник стр. 22–23, всего 51+3*
+- group: Матан задание 2 · неделя 1
+  kind: дз-задача
+  items:
+    - id: matan2-w1-01
+      title: "С1 §9: 50(1,2)"
+    - id: matan2-w1-02
+      title: "С1 §9: 51"
+    - id: matan2-w1-03
+      title: "Т.1"
+    - id: matan2-w1-04
+      title: "Т.2"
+    - id: matan2-w1-05
+      title: "С1 §13: 179(4)"
+    - id: matan2-w1-06
+      title: "С1 §13: 197(4)"
+    - id: matan2-w1-07
+      title: "С1 §13: 201(2)"
+    - id: matan2-w1-08
+      title: "С1 §13: 214(2)"
+    - id: matan2-w1-09
+      title: "С1 §13: 173"
+    - id: matan2-w1-10
+      title: "С1 §14: 3(9)"
+    - id: matan2-w1-11
+      title: "С1 §15: 1(8)"
+    - id: matan2-w1-12
+      title: "С1 §15: 14(3)"
+- group: Матан задание 2 · неделя 2
+  kind: дз-задача
+  items:
+    - id: matan2-w2-13
+      title: "С1 §15: 24(11,15)"
+    - id: matan2-w2-14
+      title: "С1 §15: 25(3,7,10)"
+    - id: matan2-w2-15
+      title: "С1 §15: 26(2)"
+    - id: matan2-w2-16
+      title: "Т.3"
+      star: true
+    - id: matan2-w2-17
+      title: "С1 §16: 5"
+    - id: matan2-w2-18
+      title: "С1 §16: 15(2)"
+    - id: matan2-w2-19
+      title: "С1 §16: 19"
+    - id: matan2-w2-20
+      title: "С1 §16: 33"
+    - id: matan2-w2-21
+      title: "С1 §16: 30"
+    - id: matan2-w2-22
+      title: "Т.4"
+    - id: matan2-w2-23
+      title: "Т.5"
+- group: Матан задание 2 · неделя 3
+  kind: дз-задача
+  items:
+    - id: matan2-w3-24
+      title: "С1 §18: 2(8)"
+    - id: matan2-w3-25
+      title: "С1 §18: 4(8)"
+    - id: matan2-w3-26
+      title: "С1 §18: 5(4)"
+    - id: matan2-w3-27
+      title: "С1 §18: 6(7)"
+    - id: matan2-w3-28
+      title: "С1 §18: 2(4)"
+    - id: matan2-w3-29
+      title: "С1 §18: 18(4)"
+    - id: matan2-w3-30
+      title: "С1 §18: 20(6)"
+    - id: matan2-w3-31
+      title: "С1 §18: 30(1)"
+    - id: matan2-w3-32
+      title: "С1 §18: 38(6)"
+    - id: matan2-w3-33
+      title: "С1 §18: 39(7)"
+    - id: matan2-w3-34
+      title: "Т.6"
+    - id: matan2-w3-35
+      title: "Т.7"
+- group: Матан задание 2 · неделя 4
+  kind: дз-задача
+  items:
+    - id: matan2-w4-36
+      title: "С1 §17: 27"
+    - id: matan2-w4-37
+      title: "С1 §17: 49"
+    - id: matan2-w4-38
+      title: "С1 §17: 64"
+    - id: matan2-w4-39
+      title: "С1 §17: 76"
+    - id: matan2-w4-40
+      title: "С1 §17: 81(1)"
+      star: true
+    - id: matan2-w4-41
+      title: "С1 §19: 7(1)"
+    - id: matan2-w4-42
+      title: "С1 §19: 9(6)"
+    - id: matan2-w4-43
+      title: "С1 §19: 14(5)"
+    - id: matan2-w4-44
+      title: "С1 §19: 23(3)"
+    - id: matan2-w4-45
+      title: "С1 §19: 29(3)"
+    - id: matan2-w4-46
+      title: "С1 §19: 47(5)"
+    - id: matan2-w4-47
+      title: "С1 §19: 58(3)"
+      star: true
+    - id: matan2-w4-48
+      title: "Т.8"
+    - id: matan2-w4-49
+      title: "С1 §23: 67(2,3)"
+- group: Матан задание 3
+  kind: дз
+  items:
+    - id: matan3-submit
+      title: "Задание 3: сдать тетрадь"
+      soft: 2026-12-08
+      hard: 2026-12-14
+      note: задавальник стр. 24–25, всего 48+5*
+- group: Матан задание 3 · неделя 1
+  kind: дз-задача
+  items:
+    - id: matan3-w1-01
+      title: "С1 §12: 4(4)"
+    - id: matan3-w1-02
+      title: "С1 §12: 2(1,2)"
+    - id: matan3-w1-03
+      title: "С1 §12: 21"
+    - id: matan3-w1-04
+      title: "С1 §12: 23"
+    - id: matan3-w1-05
+      title: "С1 §12: 25"
+    - id: matan3-w1-06
+      title: "С1 §12: 29"
+    - id: matan3-w1-07
+      title: "Т.1"
+    - id: matan3-w1-08
+      title: "С1 §12: 3(7,9)"
+    - id: matan3-w1-09
+      title: "Т.2"
+    - id: matan3-w1-10
+      title: "Т.3"
+      star: true
+- group: Матан задание 3 · неделя 2
+  kind: дз-задача
+  items:
+    - id: matan3-w2-11
+      title: "С1 §20: 14"
+    - id: matan3-w2-12
+      title: "С1 §20: 33"
+    - id: matan3-w2-13
+      title: "С1 §20: 41(5)"
+    - id: matan3-w2-14
+      title: "С1 §20: 57"
+    - id: matan3-w2-15
+      title: "С1 §20: 69(5)"
+    - id: matan3-w2-16
+      title: "С1 §20: 70(4,5,7)"
+    - id: matan3-w2-17
+      title: "С1 §20: 73"
+      star: true
+    - id: matan3-w2-18
+      title: "Т.4"
+    - id: matan3-w2-19
+      title: "С1 §21: 5(2)"
+    - id: matan3-w2-20
+      title: "С1 §21: 12(10)"
+    - id: matan3-w2-21
+      title: "С1 §21: 14(3)"
+    - id: matan3-w2-22
+      title: "С1 §21: 15(5)"
+    - id: matan3-w2-23
+      title: "С1 §21: 23(4)"
+      star: true
+    - id: matan3-w2-24
+      title: "С1 §21: 31(1)"
+      star: true
+- group: Матан задание 3 · неделя 3
+  kind: дз-задача
+  items:
+    - id: matan3-w3-25
+      title: "С2 §6: 4(1)"
+    - id: matan3-w3-26
+      title: "С2 §6: 24"
+    - id: matan3-w3-27
+      title: "С2 §6: 54(4)"
+    - id: matan3-w3-28
+      title: "С2 §6: 112(1)"
+    - id: matan3-w3-29
+      title: "С2 §6: 117"
+    - id: matan3-w3-30
+      title: "С2 §6: 126"
+    - id: matan3-w3-31
+      title: "С2 §6: 197"
+    - id: matan3-w3-32
+      title: "С2 §6: 133"
+    - id: matan3-w3-33
+      title: "С2 §6: 157"
+    - id: matan3-w3-34
+      title: "С2 §6: 108(1)"
+    - id: matan3-w3-35
+      title: "Т.5"
+    - id: matan3-w3-36
+      title: "Т.6"
+      star: true
+- group: Матан задание 3 · неделя 4
+  kind: дз-задача
+  items:
+    - id: matan3-w4-37
+      title: "С2 §2: 2(4)"
+    - id: matan3-w4-38
+      title: "С2 §2: 3(3)"
+    - id: matan3-w4-39
+      title: "С2 §2: 4(6)"
+    - id: matan3-w4-40
+      title: "С2 §3: 4(2)"
+    - id: matan3-w4-41
+      title: "С2 §3: 5(3)"
+    - id: matan3-w4-42
+      title: "С2 §3: 18(5)"
+    - id: matan3-w4-43
+      title: "С2 §3: 19(1)"
+    - id: matan3-w4-44
+      title: "С2 §4: 9(1)"
+    - id: matan3-w4-45
+      title: "С2 §4: 15(5)"
+    - id: matan3-w4-46
+      title: "С2 §4: 18(6)"
+    - id: matan3-w4-47
+      title: "С2 §4: 21(1)"
+    - id: matan3-w4-48
+      title: "С2 §5: 151"
+    - id: matan3-w4-49
+      title: "С2 §5: 184"

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Зачётка
+Comment=Сроки, тесты и теория к сессии
+Exec=env ZACHETKA_NODE=@NODE@ @REPO@/tools/serve/open.sh
+Icon=accessories-dictionary
+Terminal=false
+Categories=Education;

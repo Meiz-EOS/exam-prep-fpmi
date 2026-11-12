@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Зачётка</string>
+    <string name="title_activity_main">Зачётка</string>
+    <string name="package_name">app.zachetka</string>
+    <string name="custom_url_scheme">app.zachetka</string>
+</resources>

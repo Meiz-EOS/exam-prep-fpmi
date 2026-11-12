@@ -1,0 +1,6 @@
+- group: Homework
+  kind: дз
+  items:
+    - id: bad-date
+      title: Invalid date
+      soft: "2026-02-30"

@@ -1,0 +1,87 @@
+# key: true утверждены пользователем 09.11 на этап временных билетов; пересматриваются, когда придёт программа потока.
+provisional: true
+tickets:
+  - { id: matan-t-0101, title: "Определение функции", src: "matan.tex:21-21", maxLevel: L1 }
+  - { id: matan-t-0102, title: "Инъекция, сюръекция и биекция", src: "matan.tex:49-58", maxLevel: L1 }
+  - { id: matan-t-0103, title: "Закон де Моргана", src: "matan.tex:111-115" }
+  - { id: matan-t-0104, title: "Аксиоматическое определение поля действительных чисел", src: "matan.tex:119-169", maxLevel: L1 }
+  - { id: matan-t-0105, title: "Аксиома непрерывности", src: "matan.tex:175-177", maxLevel: L1 }
+  - { id: matan-t-0106, title: "Свойства модуля", src: "matan.tex:211-227" }
+  - { id: matan-t-0107, title: "Принцип математической индукции", src: "matan.tex:231-255" }
+  - { id: matan-t-0108, title: "Принцип наименьшего элемента", src: "matan.tex:257-281" }
+  - { id: matan-t-0109, title: "Критерий супремума и инфимума", src: "matan.tex:308-318" }
+  - { id: matan-t-0110, title: "Принцип полноты Вейерштрасса", src: "matan.tex:320-330", key: true }
+  - { id: matan-t-0111, title: "Аксиома Архимеда", src: "matan.tex:332-342", key: true }
+  - { id: matan-t-0112, title: "Плотность рациональных чисел", src: "matan.tex:372-376" }
+  - { id: matan-t-0113, title: "Бином Ньютона", src: "matan.tex:388-398" }
+  - { id: matan-t-0114, title: "Классификация промежутков", src: "matan.tex:438-450" }
+  - { id: matan-t-0201, title: "Определение предела последовательности", src: "matan.tex:469-481", maxLevel: L1 }
+  - { id: matan-t-0202, title: "Единственность предела последовательности", src: "matan.tex:483-493" }
+  - { id: matan-t-0203, title: "Ограниченность сходящейся последовательности", src: "matan.tex:495-499" }
+  - { id: matan-t-0204, title: "Переход к пределу в неравенствах", src: "matan.tex:507-517" }
+  - { id: matan-t-0205, title: "Теорема о зажатой последовательности", src: "matan.tex:521-537", key: true }
+  - { id: matan-t-0206, title: "Арифметические операции с пределами", src: "matan.tex:539-602" }
+  - { id: matan-t-0207, title: "Предел монотонной последовательности", src: "matan.tex:628-650", key: true }
+  - { id: matan-t-0208, title: "Неравенство Бернулли", src: "matan.tex:652-660" }
+  - { id: matan-t-0209, title: "Теорема Кантора о вложенных отрезках", src: "matan.tex:674-694", key: true }
+  - { id: matan-t-0210, title: "Бесконечные пределы последовательностей", src: "matan.tex:696-709", maxLevel: L1 }
+  - { id: matan-t-0211, title: "Теорема Больцано–Вейерштрасса", src: "matan.tex:815-823", key: true }
+  - { id: matan-t-0212, title: "Критерий Коши сходимости последовательности", src: "matan.tex:833-858", key: true }
+  - { id: matan-t-0213, title: "Верхний и нижний пределы", src: "matan.tex:885-931" }
+  - { id: matan-t-0214, title: "Верхний и нижний пределы как наибольший и наименьший частичные пределы", src: "matan.tex:897-931" }
+  - { id: matan-t-0301, title: "Внутренние, внешние и граничные точки", src: "matan.tex:961-991", maxLevel: L1 }
+  - { id: matan-t-0302, title: "Критерий замкнутости множества", src: "matan.tex:1053-1113" }
+  - { id: matan-t-0303, title: "Замыкание множества", src: "matan.tex:1115-1147" }
+  - { id: matan-t-0304, title: "Лемма Гейне–Бореля", src: "matan.tex:1165-1171", key: true }
+  - { id: matan-t-0401, title: "Критерии предела функции Коши и Гейне", src: "matan.tex:1226-1304" }
+  - { id: matan-t-0402, title: "Критерий Коши для функции", src: "matan.tex:1306-1322" }
+  - { id: matan-t-0403, title: "Пределы монотонной функции", src: "matan.tex:1354-1366" }
+  - { id: matan-t-0404, title: "Непрерывность функции в точке", src: "matan.tex:1370-1378", maxLevel: L1 }
+  - { id: matan-t-0405, title: "Критерии непрерывности в точке", src: "matan.tex:1392-1427" }
+  - { id: matan-t-0406, title: "Непрерывность композиции", src: "matan.tex:1437-1439" }
+  - { id: matan-t-0407, title: "Теорема Вейерштрасса о достижении экстремумов", src: "matan.tex:1476-1488", key: true }
+  - { id: matan-t-0408, title: "Теорема о промежуточном значении", src: "matan.tex:1498-1506", key: true }
+  - { id: matan-t-0409, title: "Теорема об обратной функции", src: "matan.tex:1518-1549" }
+  - { id: matan-t-0410, title: "Счётность рациональных чисел", src: "matan.tex:1555-1577" }
+  - { id: matan-t-0411, title: "Несчётность действительных чисел", src: "matan.tex:1579-1581" }
+  - { id: matan-t-0412, title: "Теорема Кантора о равномерной непрерывности", src: "matan.tex:1601-1629", key: true }
+  - { id: matan-t-0413, title: "Экспонента: функциональное уравнение и свойства", src: "matan.tex:1635-1691" }
+  - { id: matan-t-0414, title: "Замечательные тригонометрические пределы", src: "matan.tex:1741-1776" }
+  - { id: matan-t-0415, title: "Сравнение функций и эквивалентности", src: "matan.tex:1816-1845", maxLevel: L1 }
+  - { id: matan-t-0416, title: "Свойства предела функции и предел композиции", src: "matan.tex:1246-1300" }
+  - { id: matan-t-0417, title: "Классификация точек разрыва функции", src: "matan.tex:1449-1460", maxLevel: L1 }
+  - { id: matan-t-0418, title: "Теорема о разрывах монотонной функции", src: "matan.tex:1583-1591" }
+  - { id: matan-t-0419, title: "Критерий наклонной асимптоты", src: "matan.tex:1994-2000" }
+  - { id: matan-t-0501, title: "Определение производной", src: "matan.tex:2010-2028", maxLevel: L1 }
+  - { id: matan-t-0502, title: "Дифференцируемость и непрерывность", src: "matan.tex:2030-2044" }
+  - { id: matan-t-0503, title: "Правила дифференцирования", src: "matan.tex:2058-2098" }
+  - { id: matan-t-0504, title: "Производная обратной функции", src: "matan.tex:2100-2110" }
+  - { id: matan-t-0505, title: "Теорема Ферма об экстремуме", src: "matan.tex:2283-2287" }
+  - { id: matan-t-0506, title: "Теорема Ролля", src: "matan.tex:2289-2295" }
+  - { id: matan-t-0507, title: "Теорема Лагранжа о среднем", src: "matan.tex:2299-2309", key: true }
+  - { id: matan-t-0508, title: "Теорема Коши о среднем", src: "matan.tex:2315-2329" }
+  - { id: matan-t-0509, title: "Критерий монотонности", src: "matan.tex:2341-2380" }
+  - { id: matan-t-0510, title: "Правило Лопиталя", src: "matan.tex:2423-2454" }
+  - { id: matan-t-0511, title: "Формула Лейбница", src: "matan.tex:2532-2546" }
+  - { id: matan-t-0512, title: "Формула Тейлора с остатком Пеано", src: "matan.tex:2561-2581" }
+  - { id: matan-t-0513, title: "Формула Тейлора с остатком Лагранжа", src: "matan.tex:2683-2710" }
+  - { id: matan-t-0514, title: "Критерии выпуклости", src: "matan.tex:2713-2859" }
+  - { id: matan-t-0515, title: "Неравенство Йенсена", src: "matan.tex:2943-2965" }
+  - { id: matan-t-0516, title: "Неравенства Гёльдера и Минковского", src: "matan.tex:2967-2993" }
+  - { id: matan-t-0517, title: "Описание класса первообразных", src: "matan.tex:2997-3021" }
+  - { id: matan-t-0518, title: "Формула производной параметрически заданной функции", src: "matan.tex:2237-2249" }
+  - { id: matan-t-0519, title: "Инвариантность формы первого дифференциала", src: "matan.tex:2257-2271" }
+  - { id: matan-t-0520, title: "Теорема Дарбу о промежуточных значениях производной", src: "matan.tex:2331-2337" }
+  - { id: matan-t-0601, title: "Определение интеграла Римана", src: "matan.tex:3204-3260", maxLevel: L1 }
+  - { id: matan-t-0602, title: "Критерий интегрируемости Римана", src: "matan.tex:3352-3362", key: true }
+  - { id: matan-t-0603, title: "Интегрируемость непрерывных и монотонных функций", src: "matan.tex:3364-3378" }
+  - { id: matan-t-0604, title: "Свойства интеграла Римана", src: "matan.tex:3380-3446" }
+  - { id: matan-t-0605, title: "Критерий интегрируемости Дарбу", src: "matan.tex:3484-3508" }
+  - { id: matan-t-0606, title: "Формула Ньютона–Лейбница", src: "matan.tex:3520-3532", key: true }
+  - { id: matan-t-0607, title: "Основная теорема интегрального исчисления", src: "matan.tex:3534-3554" }
+  - { id: matan-t-0608, title: "Интегрирование по частям", src: "matan.tex:3570-3580" }
+  - { id: matan-t-0609, title: "Интегральная теорема о среднем", src: "matan.tex:3612-3624" }
+  - { id: matan-t-0701, title: "Определение комплексных чисел и модуль", src: "matan.tex:3652-3716" }
+  - { id: matan-t-0702, title: "Корни комплексного числа", src: "matan.tex:3737-3753" }
+  - { id: matan-t-0703, title: "Основная теорема алгебры", src: "matan.tex:3795-3842", key: true }
+  - { id: matan-t-0704, title: "Комплексная экспонента", src: "matan.tex:3844-3860" }

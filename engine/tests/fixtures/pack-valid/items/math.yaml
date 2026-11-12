@@ -1,0 +1,11 @@
+- group: Homework
+  kind: дз
+  items:
+    - id: hw-one
+      title: First
+      soft: "2026-11-10"
+      hard: "2026-11-16"
+    - id: hw-two
+      title: Second
+      kind: дз-задача
+      star: true

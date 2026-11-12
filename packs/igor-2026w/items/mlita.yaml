@@ -1,0 +1,37 @@
+# Матлогика: контрольные по средам и домашние. Даты — по объявлениям в чате курса.
+# Контрольные пишутся организованно, без переписываний; баллы — в отдельной Google-таблице курса, в трекер пока не вносятся (08.11).
+- group: Матлогика контрольные
+  kind: кр
+  items:
+    - id: mlita-kr1
+      title: К/р 1
+      soft: 2026-09-16
+    - id: mlita-kr2
+      title: К/р 2
+      soft: 2026-09-23
+    - id: mlita-kr3
+      title: К/р 3
+      soft: 2026-10-07
+      note: разбор задач группы 618
+    - id: mlita-kr4
+      title: К/р 4
+      soft: 2026-10-21
+    - id: mlita-kr5
+      title: К/р 5
+      soft: 2026-11-11
+- group: Матлогика домашние
+  kind: дз
+  items:
+    - id: mlita-dz1
+      title: ДЗ 1
+      note: выдано 20.09 (test-1-extra), срок не найден
+    - id: mlita-dz2
+      title: ДЗ 2
+      soft: 2026-10-12
+    - id: mlita-dz3
+      title: ДЗ 3
+      note: выдано 11.10 (test-3-extra), срок не найден
+    - id: mlita-dz4
+      title: ДЗ 4
+      soft: 2026-11-16
+      note: выдано 02.11 (test-4-extra)

@@ -1,0 +1,6 @@
+id: pack-theory-bad-ticket
+title: Theory test
+subjects:
+  - { id: math, name: Math }
+
+exams: []

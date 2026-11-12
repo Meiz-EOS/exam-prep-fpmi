@@ -1,0 +1,82 @@
+/* Dark only (spec Н-1). Palette carried over from the v0 tracker. */
+:root {
+  color-scheme: dark;
+  --paper: #13161d;
+  --grid: rgba(140, 165, 230, .06);
+  --card: #1b1f28;
+  --card-hi: #232836;
+  --card-press: #2a3040;
+  --ink: #e4e7ef;
+  --muted: #959db2;
+  --line: #2c3240;
+  --pen: #8fa6ff;
+  --pen-soft: rgba(143, 166, 255, .14);
+  --red: #ff7a80;
+  --red-soft: rgba(255, 122, 128, .13);
+  --amber: #f0b45a;
+  --amber-soft: rgba(240, 180, 90, .13);
+  --green: #6ccf98;
+  --green-soft: rgba(108, 207, 152, .13);
+  --pen-on-ink: #2445b5;
+  --shade: rgba(5, 7, 12, .62);
+  --drop: rgba(0, 0, 0, .45);
+  --font-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--ink);
+  font: 15px/1.45 var(--font-body);
+  /* System bars: the APK draws edge to edge (Android 15+); Capacitor sets --safe-area-inset-*, browsers have env(). */
+  padding-left: max(16px, var(--safe-area-inset-left, env(safe-area-inset-left, 0px)));
+  padding-right: max(16px, var(--safe-area-inset-right, env(safe-area-inset-right, 0px)));
+  padding-top: calc(16px + var(--safe-area-inset-top, env(safe-area-inset-top, 0px)));
+  padding-bottom: calc(48px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+.app { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.topbar { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.topbar h1 { margin: 0; font-size: 20px; font-weight: 600; }
+.nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav a { color: var(--muted); text-decoration: none; padding: 3px 10px; border-radius: 999px; border: 1px solid transparent; }
+.nav a[aria-current="page"] { color: var(--ink); border-color: var(--line); background: var(--card); }
+.banner { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; color: var(--muted); }
+.banner.err { border-color: var(--red); color: var(--red); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* bottom sheet (ui/sheet.tsx) */
+.shade { position: fixed; inset: 0; z-index: 40; background: var(--shade); animation: fade .15s; }
+.sheet { position: fixed; z-index: 41; left: 0; right: 0; bottom: 0; max-height: 88%; overflow-y: auto; background: var(--card); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; outline: none;
+  padding: 8px max(16px, var(--safe-area-inset-right, env(safe-area-inset-right, 0px))) calc(20px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))) max(16px, var(--safe-area-inset-left, env(safe-area-inset-left, 0px))); animation: up .2s ease-out; }
+.sheet-in { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 4px; }
+.sh-head { display: flex; align-items: flex-start; gap: 12px; }
+.sh-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.sh-title { font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
+.sh-txt .meta { font-size: 12.5px; color: var(--muted); }
+/* exchange (ui/exchange.tsx) */
+.topbar:has(.xch-btn) { position: relative; padding-right: 48px; }
+.xch-btn { position: absolute; top: -4px; right: 0; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 50%; width: 36px; height: 36px; font-size: 17px; flex: none; }
+.xch-hint { margin: 0; color: var(--muted); font-size: 13.5px; }
+.xch-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.xch-row .meta { font-size: 12.5px; color: var(--muted); }
+.xch-pick { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; cursor: pointer; }
+.xch-pick input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.xch-pick.disabled { opacity: .5; pointer-events: none; }
+.xch-confirm { border: 1px solid var(--pen); background: var(--pen-soft); border-radius: 10px; padding: 10px 12px; }
+.xch-confirm p { margin: 0 0 10px; }
+.xch-acts { display: flex; gap: 8px; justify-content: flex-end; }
+.xch-msg { margin: 0; color: var(--green); }
+.xch-msg.err { color: var(--red); }
+.x { border: 0; background: var(--paper); border-radius: 50%; width: 36px; height: 36px; font-size: 16px; color: var(--muted); flex: none; }
+@keyframes up { from { transform: translateY(100%); } }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.math-error { color: var(--red); font-family: var(--font-mono); }
+.katex-display { overflow-x: auto; overflow-y: hidden; }

@@ -1,0 +1,13 @@
+id: demo-pack
+title: Demo
+subjects:
+  - id: math
+    name: Math
+exams:
+  - id: exam-math
+    subject: math
+    title: Math exam
+    date: "2026-12-26"
+thresholds:
+  ud: { L0: 0.95, L1: 0.5 }
+  hor: { L0: 1.0, L1: 0.85, L2: 0.5, keyL2: true }

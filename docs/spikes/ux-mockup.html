@@ -1,0 +1,356 @@
+<title>Макет Зачётки</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one phone-width column — variant tabs, exams, «Горит», subject groups; editor = bottom sheet. Dark only (spec Н-1), tokens from engine/src/ui/theme.css */
+:root {
+  color-scheme: dark;
+  --paper: #13161d;
+  --grid: rgba(140, 165, 230, .06);
+  --card: #1b1f28;
+  --card-hi: #232836;
+  --card-press: #2a3040;
+  --ink: #e4e7ef;
+  --muted: #959db2;
+  --line: #2c3240;
+  --pen: #8fa6ff;
+  --pen-soft: rgba(143, 166, 255, .14);
+  --red: #ff7a80;
+  --red-soft: rgba(255, 122, 128, .13);
+  --amber: #f0b45a;
+  --amber-soft: rgba(240, 180, 90, .13);
+  --green: #6ccf98;
+  --green-soft: rgba(108, 207, 152, .13);
+  --shade: rgba(5, 7, 12, .62);
+  --font-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--ink);
+  font: 15px/1.45 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px 96px;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+.app { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+h1 { margin: 0; font-size: 20px; font-weight: 600; }
+h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* variant switcher (mockup only) */
+.variants { background: var(--card); border: 1px dashed var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.variants p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; background: var(--paper); border-radius: 10px; padding: 4px; }
+.seg button { border: 0; background: transparent; border-radius: 7px; padding: 8px 4px; font-size: 14px; color: var(--muted); min-height: 40px; }
+.seg button[aria-pressed="true"] { background: var(--card-hi); color: var(--ink); font-weight: 600; }
+
+/* exams */
+.exams { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.exam { flex: 0 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 1px; }
+.exam .s { font-weight: 600; font-size: 14px; }
+.exam .d { font-size: 12.5px; color: var(--pen); }
+
+/* sections */
+.block { display: flex; flex-direction: column; gap: 8px; }
+.hot h2 { color: var(--red); }
+.list { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+
+/* item row: the whole row is one button */
+.item + .item { border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 7.6em 1fr auto; gap: 12px; align-items: center; min-height: 56px; padding: 8px 8px 8px 10px; }
+.open-row { width: 100%; display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; background: none; border: 0; padding: 6px 4px 6px 0; text-align: left; border-radius: 8px; min-height: 44px; }
+.item { transition: background .12s; }
+.item:has(.open-row:hover) { background: var(--card-hi); }
+.item:has(.open-row:active) { background: var(--card-press); }
+.txt { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.t { overflow-wrap: anywhere; }
+.meta { font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.star { color: var(--red); font-weight: 600; }
+.due { font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); white-space: nowrap; text-align: right; }
+.due.soon { color: var(--amber); }
+.due.late { color: var(--red); font-weight: 600; }
+.chev { color: var(--muted); font-size: 20px; line-height: 1; width: 14px; text-align: center; }
+
+/* status pill: fixed width, never reflows */
+.pill { width: 100%; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--paper); border-radius: 8px; padding: 0 8px; height: 36px; font-size: 13px; white-space: nowrap; text-align: left; }
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+.pill .lbl { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.pill .car { color: var(--muted); font-size: 11px; }
+.pill:hover { border-color: var(--muted); }
+.pill:active { transform: scale(.97); }
+[data-s="в работе"] { --sc: var(--pen); --sb: var(--pen-soft); }
+[data-s="сдано"] { --sc: var(--amber); --sb: var(--amber-soft); }
+[data-s="принято"] { --sc: var(--green); --sb: var(--green-soft); }
+[data-s="доработка"] { --sc: var(--red); --sb: var(--red-soft); }
+.pill[data-s]:not([data-s="не начато"]) { background: var(--sb); border-color: transparent; color: var(--sc); }
+.pill[data-s] .dot { background: var(--sc, var(--muted)); }
+.pill[aria-expanded="true"] { outline: 2px solid var(--pen); outline-offset: 1px; }
+
+/* variant A: inline strip under the row */
+.strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 0 10px 10px; }
+.opt { border: 1px solid var(--line); background: var(--paper); border-radius: 8px; min-height: 44px; padding: 4px 2px; font-size: 12.5px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; line-height: 1.15; text-align: center; }
+.opt .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sc, var(--muted)); }
+.opt[aria-checked="true"] { background: var(--sb, var(--card-hi)); color: var(--sc, var(--ink)); border-color: var(--sc, var(--muted)); font-weight: 600; }
+
+/* variant B: popover */
+.pop { position: fixed; z-index: 30; background: var(--card-hi); border: 1px solid var(--line); border-radius: 12px; padding: 6px; display: flex; flex-direction: column; gap: 2px; min-width: 190px; box-shadow: 0 12px 32px rgba(0,0,0,.45); }
+.pop button { display: flex; align-items: center; gap: 10px; border: 0; background: transparent; border-radius: 8px; min-height: 44px; padding: 0 12px; text-align: left; font-size: 14.5px; }
+.pop button:hover { background: var(--card-press); }
+.pop .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sc, var(--muted)); }
+.pop button[aria-checked="true"] { color: var(--sc, var(--ink)); font-weight: 600; }
+.pop button[aria-checked="true"]::after { content: "✓"; margin-left: auto; }
+.veil { position: fixed; inset: 0; z-index: 20; }
+
+/* bottom sheet */
+.shade { position: fixed; inset: 0; z-index: 40; background: var(--shade); animation: fade .15s; }
+.sheet { position: fixed; z-index: 41; left: 0; right: 0; bottom: 0; max-height: 88%; overflow-y: auto; background: var(--card); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0;
+  padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); animation: up .2s ease-out; }
+.sheet-in { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 4px; }
+.sh-head { display: flex; align-items: flex-start; gap: 12px; }
+.sh-head .txt { flex: 1; }
+.sh-head .t { font-size: 18px; font-weight: 600; }
+.x { border: 0; background: var(--paper); border-radius: 50%; width: 36px; height: 36px; font-size: 18px; color: var(--muted); flex: none; }
+.sh-status { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fields label { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; color: var(--muted); min-width: 0; }
+.fields .wide { grid-column: 1 / -1; }
+.fields input, .fields textarea { border: 1px solid var(--line); background: var(--paper); border-radius: 8px; padding: 10px; font-size: 15px; width: 100%; min-width: 0; min-height: 44px; }
+.fields textarea { min-height: 72px; resize: vertical; }
+.pack-note { font-size: 13px; color: var(--muted); background: var(--paper); border-radius: 8px; padding: 8px 10px; }
+.sh-acts { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.ghost { border: 1px solid var(--line); background: transparent; border-radius: 8px; min-height: 40px; padding: 0 12px; font-size: 14px; }
+
+/* groups */
+.subject { display: flex; flex-direction: column; gap: 8px; }
+.subject > h3 { font-size: 17px; font-weight: 600; margin: 0; }
+.group { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.group > summary { list-style: none; display: grid; grid-template-columns: 1fr auto 20px; gap: 6px 12px; padding: 12px; cursor: pointer; align-items: center; min-height: 56px; }
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary:hover { background: var(--card-hi); }
+.group > summary:active { background: var(--card-press); }
+.gname { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.gcount { font-size: 13px; color: var(--muted); }
+.gchev { color: var(--muted); font-size: 20px; transition: transform .15s; text-align: center; }
+.group[open] .gchev { transform: rotate(90deg); }
+.meter { grid-column: 1 / -1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; display: flex; }
+.meter i { display: block; height: 100%; }
+.group > .rows { border-top: 1px solid var(--line); }
+
+/* toast */
+.toast { position: fixed; z-index: 50; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--paper); border-radius: 10px; display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 14px; font-size: 14px; max-width: calc(100% - 32px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.toast button { border: 0; background: transparent; color: var(--pen); font-weight: 600; padding: 8px 10px; border-radius: 6px; min-height: 40px; }
+
+@keyframes up { from { transform: translateY(100%); } }
+@keyframes fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@media (max-width: 400px) {
+  .row { grid-template-columns: 6.9em 1fr; }
+  .pill { font-size: 12.5px; padding: 0 6px; }
+  .opt { font-size: 11.5px; }
+}
+</style>
+
+<div class="app">
+  <h1>Зачётка</h1>
+
+  <section class="variants" aria-label="Варианты макета">
+    <p><b>Макет, данные не сохраняются.</b> Выберите вариант смены статуса и потыкайте. Нажатие на строку открывает карточку пункта снизу во всех вариантах.</p>
+    <div class="seg" role="group" aria-label="Вариант">
+      <button type="button" data-v="A" aria-pressed="false">A · полоска</button>
+      <button type="button" data-v="B" aria-pressed="true">B · меню</button>
+      <button type="button" data-v="C" aria-pressed="false">C · в карточке</button>
+    </div>
+    <p id="vdesc"></p>
+  </section>
+
+  <section class="exams" aria-label="Экзамены" id="exams"></section>
+
+  <section class="block hot" aria-labelledby="hot-h">
+    <h2 id="hot-h">Горит · 7 дней и просрочки</h2>
+    <div class="list" id="hot"></div>
+  </section>
+
+  <div id="subjects" style="display:flex;flex-direction:column;gap:18px"></div>
+</div>
+<div id="layer"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const TODAY = "2026-11-08";
+const STATUSES = ["не начато", "в работе", "сдано", "принято", "доработка"];
+const SHORT = { "не начато": "не начато", "в работе": "в работе", "сдано": "сдано", "принято": "принято", "доработка": "доработка" };
+const DONE = new Set(["сдано", "принято"]);
+const DESC = {
+  A: "Нажатие на статус раскрывает под строкой полоску из пяти статусов. Выбор закрывает полоску.",
+  B: "Нажатие на статус открывает небольшое меню рядом с ним. Выбор закрывает меню.",
+  C: "Статус показан в строке, но меняется только в карточке пункта. Любое нажатие на строку открывает карточку.",
+};
+const EXAMS = [["АиГ", "2026-12-26"], ["Матан, письм.", "2027-01-09"], ["Матан, устн.", "2027-01-13"], ["ОКТЧ", "2027-01-18"], ["АиСД", "2027-01-22"]];
+const items = [
+  { id: "aisd-td04", subj: "АиСД", group: "АиСД теорДЗ", kind: "теордз", title: "ТеорДЗ 04: ДО, Sparse Table", soft: "2026-11-08", packNote: "устно; без Google и LLM", status: "в работе" },
+  { id: "aig2-submit", subj: "АиГ", group: "АиГ задание 2", kind: "дз", title: "Задание 2: сдать тетрадь", soft: "2026-11-10", hard: "2026-11-16", packNote: "бумага до 17:00 или скан до 23:59; задавальник стр. 8–9", status: "не начато" },
+  { id: "cpp-string", subj: "C++", group: "C++ задачи", kind: "задача-cpp", title: "String", soft: "2026-11-11", packNote: "мягкий дедлайн; потом устная защита", status: "сдано" },
+  { id: "cpp-mult", subj: "C++", group: "C++ задачи", kind: "задача-cpp", title: "multiplication", packNote: "ОБЯЗАТЕЛЬНА для зачёта курса", status: "не начато" },
+  { id: "cpp-bigint", subj: "C++", group: "C++ задачи", kind: "задача-cpp", title: "BigInteger", soft: "2026-11-29", packNote: "часть тестов на скорость", status: "не начато" },
+  { id: "cpp-rational", subj: "C++", group: "C++ задачи", kind: "задача-cpp", title: "Rational", soft: "2026-11-30", packNote: "на своём BigInteger", status: "не начато" },
+  { id: "aisd-c4", subj: "АиСД", group: "АиСД контесты", kind: "контест", title: "Контест 4", packNote: "срок не найден; после ревью — устная защита", status: "в работе" },
+  ...[["С 16.22"], ["С 16.18(19,22,25)", "принято"], ["С 16.34(4,6)", "сдано"], ["С 16.40", "доработка", 1], ["С 17.1(5,6)", "в работе"], ["С 17.5"], ["С 19.6(34,40)"], ["С 19.7(2)"]]
+    .map(([title, status = "не начато", star], i) => ({ id: "aig2-w1-0" + (i + 1), subj: "АиГ", group: "АиГ задание 2 · неделя 1", kind: "дз-задача", title, status, star: !!star })),
+  { id: "aig-kr2", subj: "АиГ", group: "АиГ контрольные", kind: "кр", title: "Кр2", packNote: "после задания 2, на паре; дата не известна", status: "не начато" },
+];
+const SUBJ = ["АиГ", "АиСД", "C++"];
+
+let variant = "B", stripId = null, popFor = null, sheetId = null;
+const sticky = new Set();          // changed this session: stay in «Горит»
+const openGroups = new Set(["АиГ задание 2 · неделя 1", "C++ задачи"]);
+
+const $ = (id) => document.getElementById(id);
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) el.append(c.nodeType ? c : document.createTextNode(String(c)));
+  return el;
+}
+const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return Date.UTC(y, m - 1, d); };
+const days = (s) => Math.round((parse(s) - parse(TODAY)) / 864e5);
+const fmt = (s) => s.slice(8, 10) + "." + s.slice(5, 7);
+function due(it) {
+  const d = it.soft && days(it.soft) >= 0 ? it.soft : it.hard || it.soft;
+  if (!d) return null;
+  const n = days(d);
+  const txt = n < 0 ? `${fmt(d)} · −${-n} дн` : n === 0 ? "сегодня" : n === 1 ? "завтра" : `${fmt(d)} · ${n} дн`;
+  return { n, txt, cls: DONE.has(it.status) ? "" : n <= 0 ? "late" : n <= 7 ? "soon" : "" };
+}
+const isHot = (it) => { const d = due(it); return !!d && d.n <= 7 && (!DONE.has(it.status) || sticky.has(it.id)); };
+
+/* changes: instant + undo */
+let toastT;
+function setStatus(it, s) {
+  if (it.status === s) return;
+  const prev = it.status;
+  it.status = s; sticky.add(it.id);
+  render();
+  toast(`${it.title}: ${s}`, () => { it.status = prev; render(); });
+}
+function toast(msg, undo) {
+  const t = $("toast");
+  t.replaceChildren(h("span", {}, msg), undo ? h("button", { type: "button", onclick: () => { undo(); t.hidden = true; } }, "Отменить") : null);
+  t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 4000);
+}
+
+function pill(it, ctx) {
+  const ex = (variant === "A" && stripId === ctx) || (variant === "B" && popFor === ctx);
+  return h("button", { class: "pill", type: "button", "data-s": it.status, "aria-haspopup": variant === "C" ? "dialog" : "true", "aria-expanded": String(ex),
+      "aria-label": `Статус: ${it.status}. Изменить`,
+      onclick: (e) => {
+        if (variant === "A") { stripId = stripId === ctx ? null : ctx; render(); }
+        else if (variant === "B") openPop(it, ctx, e.currentTarget);
+        else openSheet(it.id);
+      } },
+    h("span", { class: "dot" }), h("span", { class: "lbl" }, SHORT[it.status]), h("span", { class: "car" }, variant === "C" ? "›" : "▾"));
+}
+function statusOptions(it, onPick, cls = "opt") {
+  return STATUSES.map((s) => h("button", { type: "button", class: cls, role: "radio", "data-s": s, "aria-checked": String(it.status === s), onclick: () => onPick(s) },
+    h("span", { class: "dot" }), h("span", {}, s)));
+}
+function itemRow(it, inHot) {
+  const ctx = (inHot ? "h:" : "l:") + it.id;
+  const d = due(it);
+  const meta = inHot ? `${it.subj} · ${it.group}` : it.packNote || (it.kind !== "дз-задача" ? it.kind : "");
+  const wrap = h("div", { class: "item" },
+    h("div", { class: "row" },
+      pill(it, ctx),
+      h("button", { class: "open-row", type: "button", "aria-haspopup": "dialog", onclick: () => openSheet(it.id) },
+        h("span", { class: "txt" }, h("span", { class: "t" }, it.title, it.star ? h("span", { class: "star", title: "повышенной сложности" }, " *") : null), meta ? h("span", { class: "meta" }, meta) : null),
+        d ? h("span", { class: "due " + d.cls }, d.txt) : h("span"),
+        h("span", { class: "chev", "aria-hidden": "true" }, "›"))));
+  if (variant === "A" && stripId === ctx) {
+    wrap.append(h("div", { class: "strip", role: "radiogroup", "aria-label": "Статус" }, statusOptions(it, (s) => { stripId = null; setStatus(it, s); })));
+  }
+  return wrap;
+}
+
+/* variant B popover */
+function openPop(it, ctx, anchor) {
+  const r = anchor.getBoundingClientRect(); // measure before render() replaces the button
+  popFor = ctx; render();
+  const pop = h("div", { class: "pop", role: "radiogroup", "aria-label": "Статус" }, statusOptions(it, (s) => { closePop(); setStatus(it, s); }, ""));
+  const veil = h("div", { class: "veil", onclick: closePop });
+  $("layer").replaceChildren(veil, pop);
+  const ph = 5 * 46 + 12, below = r.bottom + 6 + ph < innerHeight;
+  pop.style.left = Math.max(12, Math.min(r.left, innerWidth - 202)) + "px";
+  pop.style.top = (below ? r.bottom + 6 : Math.max(12, r.top - ph - 6)) + "px";
+  pop.querySelector('[aria-checked="true"]')?.focus();
+}
+function closePop() { popFor = null; $("layer").replaceChildren(); render(); }
+
+/* bottom sheet */
+function openSheet(id) { sheetId = id; popFor = null; stripId = null; render(); }
+function closeSheet() { sheetId = null; $("layer").replaceChildren(); render(); }
+function renderSheet() {
+  const it = items.find((x) => x.id === sheetId);
+  if (!it) return;
+  const d = due(it);
+  const sheet = h("div", { class: "sheet", role: "dialog", "aria-modal": "true", "aria-label": it.title },
+    h("div", { class: "sheet-in" },
+      h("div", { class: "grab" }),
+      h("div", { class: "sh-head" },
+        h("div", { class: "txt" }, h("span", { class: "t" }, it.title), h("span", { class: "meta" }, `${it.subj} · ${it.group}${d ? " · " + d.txt : ""}`)),
+        h("button", { class: "x", type: "button", "aria-label": "Закрыть", onclick: closeSheet }, "✕")),
+      h("div", { class: "sh-status", role: "radiogroup", "aria-label": "Статус" }, statusOptions(it, (s) => setStatus(it, s))),
+      it.packNote ? h("div", { class: "pack-note" }, it.packNote) : null,
+      h("div", { class: "fields" },
+        h("label", {}, "Балл", h("input", { id: "f-score", inputmode: "decimal", placeholder: "—" })),
+        h("label", {}, "Срок", h("input", { id: "f-soft", type: "date", value: it.soft || "" })),
+        h("label", { class: "wide" }, "Моя заметка", h("textarea", { id: "f-note", placeholder: "Например: спросить семинариста про 16.40" }))),
+      h("div", { class: "sh-acts" }, h("span", {}, "Изменения сохраняются сразу"), h("button", { class: "ghost", type: "button", onclick: closeSheet }, "Готово"))));
+  $("layer").replaceChildren(h("div", { class: "shade", onclick: closeSheet }), sheet);
+}
+addEventListener("scroll", () => { if (popFor) closePop(); }, { passive: true });
+addEventListener("resize", () => { if (popFor) closePop(); });
+addEventListener("keydown", (e) => { if (e.key === "Escape") { if (sheetId) closeSheet(); else if (popFor) closePop(); else if (stripId) { stripId = null; render(); } } });
+
+function render() {
+  $("vdesc").textContent = DESC[variant];
+  document.querySelectorAll(".seg button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === variant)));
+  $("exams").replaceChildren(...EXAMS.map(([t, d]) => h("div", { class: "exam" }, h("span", { class: "s" }, t), h("span", { class: "d num" }, `${fmt(d)} · ${days(d)} дн`))));
+  const hot = items.filter(isHot).sort((a, b) => due(a).n - due(b).n);
+  $("hot").replaceChildren(...(hot.length ? hot.map((it) => itemRow(it, true)) : [h("p", { class: "meta", style: "padding:12px" }, "На неделю сроков нет.")]));
+  $("subjects").replaceChildren(...SUBJ.map((s) => {
+    const groups = new Map();
+    for (const it of items.filter((x) => x.subj === s)) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+    return h("section", { class: "subject" }, h("h3", {}, s), ...[...groups].map(([g, list]) => {
+      const c = (st) => list.filter((i) => i.status === st).length;
+      const pct = (n) => (100 * n / list.length).toFixed(1) + "%";
+      const det = h("details", { class: "group", open: openGroups.has(g) || null },
+        h("summary", {},
+          h("span", { class: "gname" }, g), h("span", { class: "gcount num" }, `${c("принято") + c("сдано")}/${list.length}`), h("span", { class: "gchev", "aria-hidden": "true" }, "›"),
+          h("span", { class: "meter", "aria-hidden": "true" }, h("i", { style: `width:${pct(c("принято"))};background:var(--green)` }), h("i", { style: `width:${pct(c("сдано"))};background:var(--amber)` }), h("i", { style: `width:${pct(c("в работе") + c("доработка"))};background:var(--pen)` }))),
+        h("div", { class: "rows" }, list.map((it) => itemRow(it, false))));
+      det.addEventListener("toggle", () => (det.open ? openGroups.add(g) : openGroups.delete(g)));
+      return det;
+    }));
+  }));
+  if (sheetId && !document.querySelector("#layer .sheet")) renderSheet();
+  const cur = items.find((x) => x.id === sheetId);
+  if (cur) document.querySelectorAll("#layer .sh-status .opt").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.s === cur.status)));
+}
+document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => { variant = b.dataset.v; stripId = null; popFor = null; $("layer").replaceChildren(); sheetId = null; render(); }));
+render();
+</script>

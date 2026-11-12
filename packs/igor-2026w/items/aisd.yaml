@@ -1,0 +1,48 @@
+- group: АиСД контесты
+  kind: контест
+  items:
+    - id: aisd-c1
+      title: Контест 1
+      note: срок исправлений по ревью — 25.10
+    - id: aisd-c2
+      title: Контест 2
+      note: после ревью — устная защита
+    - id: aisd-c3
+      title: Контест 3
+      note: после ревью — устная защита
+    - id: aisd-c4
+      title: Контест 4
+      note: выдан 25.10; срок не найден; после ревью — устная защита
+- group: АиСД контесты · контест 4, задачи
+  kind: дз-задача
+  items:
+    - id: aisd-c4-a
+      title: A. Вторая статистика
+    - id: aisd-c4-b
+      title: B. Марафон
+    - id: aisd-c4-c
+      title: C. Знакочередование
+    - id: aisd-c4-d
+      title: D. Ближайший больший
+    - id: aisd-c4-e
+      title: E. Обратные инверсии
+    - id: aisd-c4-f
+      title: F. Вложенные отрезки
+    - id: aisd-c4-g
+      title: G. Очередная странная структура
+- group: АиСД теорДЗ
+  kind: теордз
+  items:
+    - id: aisd-td01
+      title: ТеорДЗ 01
+      soft: 2026-09-25
+    - id: aisd-td02
+      title: ТеорДЗ 02
+      soft: 2026-10-10
+    - id: aisd-td03
+      title: ТеорДЗ 03
+      soft: 2026-10-24
+    - id: aisd-td04
+      title: "ТеорДЗ 04: ДО, Sparse Table"
+      soft: 2026-11-08
+      note: устно; без Google и LLM

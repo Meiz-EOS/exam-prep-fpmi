@@ -1,0 +1,55 @@
+.tests { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.tests h3 { font-size: 17px; font-weight: 600; margin: 0; }
+.tests .calm { color: var(--muted); margin: 0; }
+.tests .subject { display: flex; flex-direction: column; gap: 8px; }
+.tests .list { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.trow { display: grid; grid-template-columns: 1fr auto auto 20px; gap: 4px 12px; align-items: center; width: 100%; min-height: 56px; padding: 10px 12px; text-align: left; background: transparent; border: 0; border-top: 1px solid var(--line); transition: background .12s; }
+.trow:first-child { border-top: 0; }
+.trow:hover:not(:disabled) { background: var(--card-hi); }
+.trow:active:not(:disabled) { background: var(--card-press); }
+.trow:disabled { opacity: .55; cursor: default; }
+.ttxt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ttitle { font-weight: 600; overflow-wrap: anywhere; }
+.tests .meta { font-size: 13px; color: var(--muted); }
+/* The global .meta (sdachi.css) clamps to one line; a test row shows kind · minutes · questions in full. */
+.ttxt .meta { display: block; overflow: visible; -webkit-line-clamp: unset; }
+.tstate { font-size: 13px; color: var(--muted); min-width: 40px; text-align: right; }
+.tact { font-size: 14px; color: var(--pen); min-width: 96px; text-align: right; }
+.tests .gchev { color: var(--muted); font-size: 20px; text-align: center; }
+
+.runbar { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+.runbar .ghost { min-height: 44px; }
+.runbar .timer { margin-left: auto; min-width: 96px; text-align: right; }
+.qcard { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.qbody { font-size: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.alabel { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+.answer { width: 100%; min-height: 160px; resize: vertical; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 16px; color: var(--ink); }
+.answer[readonly] { opacity: .8; }
+.tests .big { width: 100%; min-height: 48px; }
+.ref { display: flex; flex-direction: column; gap: 8px; }
+.ref h4 { margin: 0; font-size: 13px; color: var(--muted); font-weight: 600; }
+.point { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; overflow-wrap: anywhere; }
+.point input { width: 22px; height: 22px; flex: none; margin: 1px 0 0; accent-color: var(--pen); }
+.point:has(input:checked) { background: var(--pen-soft); border-color: var(--pen); }
+.point.gross { color: var(--red); }
+.point.gross:has(input:checked) { background: var(--red-soft); border-color: var(--red); }
+.score { font-weight: 600; min-height: 24px; }
+
+.bytickets > summary, .bytopics > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 10px 12px; cursor: pointer; font-weight: 600; list-style: none; }
+.bytickets > summary::-webkit-details-marker, .bytopics > summary::-webkit-details-marker { display: none; }
+.bytickets > summary:hover, .bytopics > summary:hover { background: var(--card-hi); }
+.bytickets > summary .gchev, .bytopics > summary .gchev { transition: transform .12s; }
+.bytickets[open] > summary .gchev, .bytopics[open] > summary .gchev { transform: rotate(90deg); }
+.tcode { font-family: var(--font-mono); }
+.tconf { color: var(--muted); font-weight: 400; }
+.l2badge { display: inline-block; padding: 1px 6px; border: 1px solid var(--pen); border-radius: 999px; color: var(--pen); font-weight: 600; }
+
+/* Narrow screens: the title takes the whole first line; progress and action go to the second (long exam ticket titles). */
+@media (max-width: 520px) {
+  .trow { grid-template-columns: 1fr auto 20px; grid-template-areas: "txt txt chev" "state act chev"; }
+  .trow .ttxt { grid-area: txt; }
+  .trow .tstate { grid-area: state; text-align: left; min-width: 0; }
+  .trow .tact { grid-area: act; min-width: 0; }
+  .trow .gchev { grid-area: chev; }
+  .ttitle { overflow-wrap: break-word; }
+}

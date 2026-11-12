@@ -1,0 +1,4 @@
+provisional: true
+tickets:
+  - { id: math-t-0201, title: "Limit of a sequence", src: "math.tex:452-470" }
+  - { id: math-t-0207, title: "Weierstrass theorem", src: "math.tex:612-640", key: 5 }

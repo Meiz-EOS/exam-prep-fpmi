@@ -1,0 +1,6 @@
+- group: Homework
+  kind: дз
+  items:
+    - { id: hw-one, title: First, soft: "2026-11-10", hard: "2026-11-01" }
+    - { id: hw-two, title: Second, due: "15 ноября", colour: red }
+    - { id: exam-math, title: Clash, hard: "15 ноября" }

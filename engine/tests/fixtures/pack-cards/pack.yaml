@@ -1,0 +1,5 @@
+id: cards-test
+title: Cards test
+subjects:
+  - { id: math, name: Математика }
+exams: []

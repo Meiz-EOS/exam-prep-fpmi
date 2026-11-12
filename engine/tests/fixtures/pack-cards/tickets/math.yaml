@@ -1,0 +1,2 @@
+tickets:
+  - { id: math-t-1, title: Предел, src: "math.tex:1-2" }

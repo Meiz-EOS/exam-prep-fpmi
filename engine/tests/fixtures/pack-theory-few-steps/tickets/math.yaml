@@ -1,0 +1,3 @@
+tickets:
+  - { id: math-t-1, title: Main }
+  - { id: math-t-2, title: Related }

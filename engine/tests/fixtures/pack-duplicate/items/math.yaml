@@ -1,0 +1,5 @@
+- group: Homework
+  kind: дз
+  items:
+    - id: same-id
+      title: Duplicate exam id

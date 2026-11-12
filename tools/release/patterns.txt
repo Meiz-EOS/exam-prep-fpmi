@@ -1,0 +1,19 @@
+# Generic leak patterns for tools/release/audit.sh (extended regex). Personal ones (logins, surname,
+# ids) go to <dataDir>/release/audit-patterns.txt, never here.
+
+# Absolute paths to someone's home or disks
+(^|[^A-Za-z0-9_.~-])/(home|media|Users)/[A-Za-z0-9_.-]+/
+[A-Za-z]:\\Users\\
+# claude.ai pages and sessions
+claude\.ai/(artifact|code|chat|share|public)/[A-Za-z0-9]
+# Google Sheets / Docs ids
+docs\.google\.com/(spreadsheets|document)/d/[A-Za-z0-9_-]{20}
+sheet: *["']?[A-Za-z0-9_-]{40,}
+# Personal e-mail addresses
+[A-Za-z0-9._%+-]+@(gmail|googlemail|yandex|ya|mail|bk|inbox|list|rambler|outlook|hotmail|icloud|proton|protonmail|phystech)\.[a-z]+
+# Telegram links
+t\.me/
+# Private keys and keystores
+BEGIN [A-Z ]*PRIVATE KEY
+# Chat message numbers
+сообщени[еяю]м? [0-9]{3,}

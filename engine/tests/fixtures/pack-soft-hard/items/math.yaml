@@ -1,0 +1,7 @@
+- group: Homework
+  kind: дз
+  items:
+    - id: reversed-dates
+      title: Reversed dates
+      soft: "2026-11-17"
+      hard: "2026-11-16"

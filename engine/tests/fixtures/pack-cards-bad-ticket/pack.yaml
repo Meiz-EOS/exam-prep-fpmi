@@ -1,0 +1,5 @@
+id: cards-bad-ticket
+title: Cards test
+subjects:
+  - { id: math, name: Математика }
+exams: []

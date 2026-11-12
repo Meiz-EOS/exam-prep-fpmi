@@ -1,0 +1,8 @@
+node_modules/
+dist/
+tools/anki/.venv/
+__pycache__/
+.vitest/
+packs/*/private/
+packs/*/sync.yaml
+zachetka.local.json

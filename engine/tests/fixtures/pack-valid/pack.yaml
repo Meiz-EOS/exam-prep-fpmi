@@ -1,0 +1,10 @@
+id: demo-pack
+title: Demo
+subjects:
+  - id: math
+    name: Math
+exams:
+  - id: exam-math
+    subject: math
+    title: Math exam
+    date: "2026-12-26"

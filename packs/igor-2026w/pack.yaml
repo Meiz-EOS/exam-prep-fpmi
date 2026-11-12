@@ -1,0 +1,40 @@
+id: igor-2026w
+title: "Зимняя сессия 2026/27, Б05-618"
+subjects:
+  - id: aig
+    name: АиГ
+  - id: matan
+    name: матан
+  - id: aisd
+    name: АиСД
+  - id: cpp
+    name: C++
+  - id: oktch
+    name: ОКТЧ
+  - id: mlita
+    name: матлогика
+exams:
+  - id: ex-aig
+    subject: aig
+    title: АиГ
+    date: 2026-12-26
+  - id: ex-matan-w
+    subject: matan
+    title: Матан, письм.
+    date: 2027-01-09
+  - id: ex-matan-o
+    subject: matan
+    title: Матан, устн.
+    date: 2027-01-13
+  - id: ex-oktch
+    subject: oktch
+    title: ОКТЧ
+    date: 2027-01-18
+  - id: ex-aisd
+    subject: aisd
+    title: АиСД
+    date: 2027-01-22
+
+thresholds:
+  ud: { L0: 0.95, L1: 0.5 }
+  hor: { L0: 1.0, L1: 0.85, L2: 0.5, keyL2: true }

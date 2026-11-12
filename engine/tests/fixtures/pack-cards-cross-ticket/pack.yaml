@@ -1,0 +1,6 @@
+id: cards-cross-ticket
+title: Cards test
+subjects:
+  - { id: math, name: Математика }
+  - { id: phys, name: Физика }
+exams: []

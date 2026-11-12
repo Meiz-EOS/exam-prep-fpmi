@@ -1,0 +1,6 @@
+id: multi-broken
+title: Several mistakes
+subjects:
+  - { id: math, name: Math }
+exams:
+  - { id: exam-math, subject: math, title: Exam, date: "2026-12-26" }
