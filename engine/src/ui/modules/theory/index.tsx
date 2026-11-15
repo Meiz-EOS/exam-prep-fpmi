@@ -34,8 +34,6 @@ export function Theory() {
   useEffect(() => store?.subscribe("attempts", (snap) => setAttempts(snap.docs.map(asAttempt)), () => {}), [store]);
   const subjects = pack.subjects.filter((subject) => pack.tickets?.some((ticket) => ticket.subject === subject.id));
   const tickets = pack.tickets ?? [];
-  const selected = tickets.find((ticket) => ticket.id === openId);
-  const entry = (pack.theory ?? []).find((item) => item.ticket === openId);
 
   return <main class="theory">
     {subjects.length === 0 && <p class="theory-empty">{t.theoryEmpty}</p>}
@@ -47,16 +45,26 @@ export function Theory() {
         <span class="theory-chevron" aria-hidden="true">›</span>
       </button>)}</div>
     </section>)}
-    {selected && <Sheet title={selected.title} sub={selected.key ? t.theoryKey : undefined} onClose={() => setOpenId(null)}>
-      {entry ? <div class="theory-detail">
-        <section><h3>{t.theoryFormulation}</h3><div class="theory-math"><MathText text={entry.formulation} /></div></section>
-        {entry.skeleton && <section><h3>{t.theorySkeleton}</h3><ol>{entry.skeleton.map((step, index) => <li key={index}><MathText text={step} /></li>)}</ol></section>}
-        {!!entry.reliesOn?.length && <section><h3>{t.theoryRelies}</h3><ul class="theory-relies">{entry.reliesOn.map((id) => <li key={id}><button type="button" onClick={() => setOpenId(id)}>{tickets.find((ticket) => ticket.id === id)?.title ?? id}</button></li>)}</ul></section>}
-        {selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}
-      </div> : <p class="theory-missing">{t.theoryMissing}</p>}
-      <div class="theory-detail-levels">{levels.map((level) => <span key={level}>{level} <strong>{valueLabel(selected, level, pack.tests ?? [], attempts, pack.remap ?? {})}</strong></span>)}</div>
-    </Sheet>}
+    {openId && <TicketSheet id={openId} attempts={attempts} onOpen={setOpenId} onClose={() => setOpenId(null)} />}
   </main>;
+}
+
+/** A ticket's theory in the bottom sheet: formulation, skeleton, what it relies on, the source and the values by level. */
+export function TicketSheet({ id, attempts, onOpen, onClose }: { id: string; attempts: readonly Attempt[]; onOpen: (id: string) => void; onClose: () => void }) {
+  const { pack } = useData();
+  const tickets = pack.tickets ?? [];
+  const selected = tickets.find((ticket) => ticket.id === id);
+  const entry = (pack.theory ?? []).find((item) => item.ticket === id);
+  if (!selected) return null;
+  return <Sheet title={selected.title} sub={selected.key ? t.theoryKey : undefined} onClose={onClose}>
+    {entry ? <div class="theory-detail">
+      <section><h3>{t.theoryFormulation}</h3><div class="theory-math"><MathText text={entry.formulation} /></div></section>
+      {entry.skeleton && <section><h3>{t.theorySkeleton}</h3><ol>{entry.skeleton.map((step, index) => <li key={index}><MathText text={step} /></li>)}</ol></section>}
+      {!!entry.reliesOn?.length && <section><h3>{t.theoryRelies}</h3><ul class="theory-relies">{entry.reliesOn.map((other) => <li key={other}><button type="button" onClick={() => onOpen(other)}>{tickets.find((ticket) => ticket.id === other)?.title ?? other}</button></li>)}</ul></section>}
+      {selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}
+    </div> : <div class="theory-detail"><p class="theory-missing">{t.theoryMissing}</p>{selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}</div>}
+    <div class="theory-detail-levels">{levels.map((level) => <span key={level}>{level} <strong>{valueLabel(selected, level, pack.tests ?? [], attempts, pack.remap ?? {})}</strong></span>)}</div>
+  </Sheet>;
 }
 
 /** Exam ticket code shown in group headers: id without the subject prefix (aig-b-g01 → b-g01). */
@@ -73,7 +81,7 @@ function renderGroups(subjectId: string, tickets: BuiltTicket[], exam: BuiltExam
   </section>);
 }
 
-function valueLabel(ticket: BuiltTicket, level: Level, tests: NonNullable<ReturnType<typeof useData>["pack"]["tests"]>, attempts: Attempt[], remap: Readonly<Record<string, string>>): string {
+function valueLabel(ticket: BuiltTicket, level: Level, tests: NonNullable<ReturnType<typeof useData>["pack"]["tests"]>, attempts: readonly Attempt[], remap: Readonly<Record<string, string>>): string {
   const value = cell(ticket.id, level, tests, attempts, remap).value;
   return value === null ? "—" : `${Math.round(value * 100)}%`;
 }

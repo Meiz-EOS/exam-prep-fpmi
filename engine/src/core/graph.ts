@@ -244,3 +244,18 @@ export function subjectTopicCounts(graph: TopicGraph, states: ReadonlyMap<string
   }
   return counts;
 }
+
+/**
+ * `meta/topics` marks after the student corrects a topic by hand: «I know it» (`learned`) or «I do not» (`unknown`).
+ * A mark is kept only while it changes something: when the placement and the answers already say what the student
+ * wants, the opposite mark is simply removed.
+ */
+export function markTopic(pack: PackQuestions, graph: TopicGraph, input: KnowledgeInput, id: string, want: TopicMark["state"], at: string): Record<string, TopicMark> {
+  const marks: Record<string, TopicMark> = { ...(input.marks ?? {}) };
+  delete marks[id];
+  if (!graph.byId.has(id)) return marks;
+  const state = topicStates(pack, graph, { ...input, marks }).get(id);
+  const done = state === "known" || state === "learned";
+  if (done !== (want === "learned")) marks[id] = { state: want, at };
+  return marks;
+}

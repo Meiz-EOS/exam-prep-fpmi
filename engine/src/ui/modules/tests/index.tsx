@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import type { BuiltExamTicket, BuiltPack, BuiltTest, Question } from "../../../content/schema";
+import { hasGraph } from "../../../core/graph";
+import { nextPlacementQuestion, placementMinutes, placementPlan, resumePlacement } from "../../../core/placement";
 import { useData } from "../../context";
 import { t } from "../../i18n";
+import { type Knowledge, useKnowledge } from "../../knowledge";
+import { PlacementRunner } from "../graph/placement";
 import { Math as Tex } from "../../math";
 import { l2TopicParents } from "../../../content/coverage";
 import { examCode } from "../theory";
-import { type Answer, type Attempt, appendAnswer, attemptsOf, minutesBetween, nextIndex, selfScore, startRun, testQuestions, toAttempt } from "./run";
+import { type Answer, type Attempt, appendAnswer, attemptsOf, minutesBetween, nextIndex, selfScore, startRun, testQuestions } from "./run";
 import "./tests.css";
 
 interface Run {
@@ -18,18 +22,15 @@ interface Run {
 
 export function Tests() {
   const { pack, store, canWrite, onError } = useData();
-  const [attempts, setAttempts] = useState<Attempt[]>([]);
+  const k = useKnowledge();
+  const attempts = k.attempts;
   const [run, setRun] = useState<Run | null>(null);
+  /** Subject whose entry test by the graph is open (Р-89). */
+  const [placement, setPlacement] = useState<string | null>(null);
   // Kept here, not in the list: the list unmounts during a run and the group must stay open after it.
   const [openTickets, setOpenTickets] = useState<string[]>([]);
   const [openTopics, setOpenTopics] = useState<string[]>([]);
   const ro = !store || !canWrite;
-
-  // One subscription per store; never inside render paths that re-run (03-build.md#traps, 5).
-  useEffect(() => {
-    if (!store) return;
-    return store.subscribe("attempts", (snap) => setAttempts(snap.docs.map(toAttempt)), () => {});
-  }, [store]);
 
   const start = (test: BuiltTest, open?: Attempt) => {
     if (!store) return;
@@ -41,6 +42,7 @@ export function Tests() {
   };
 
   if (run) return <RunView key={run.test.id + run.startedAt} run={run} onExit={() => setRun(null)} />;
+  if (placement) return <PlacementRunner k={k} subject={placement} backLabel={t.testsBack} onExit={() => setPlacement(null)} onPlan={() => { location.hash = "#today"; }} />;
 
   const tests = pack.tests ?? [];
   const subjects = pack.subjects.filter((s) => tests.some((x) => x.subject === s.id));
@@ -56,7 +58,10 @@ export function Tests() {
             <h3>{s.name}</h3>
             {plain.length > 0 && (
               <div class="list">
-                {plain.map((test) => <TestRow key={test.id} test={test} attempts={attempts} disabled={ro} onStart={start} />)}
+                {plain.map((test) => test.kind === "entry" && hasGraph(k.graph, s.id)
+                  // Р-89: with a graph the entry test is a pool; all entry files of the subject open one test by the graph
+                  ? (test === plain.find((x) => x.kind === "entry") && <PlacementRow key={test.id} test={test} k={k} disabled={ro} onOpen={() => setPlacement(s.id)} />)
+                  : <TestRow key={test.id} test={test} attempts={attempts} disabled={ro} onStart={start} />)}
               </div>
             )}
             {byTicket.length > 0 && (
@@ -155,6 +160,28 @@ function TestRow({ test, exam, l2Part, attempts, disabled, onStart }: {
   );
 }
 
+/** The entry test of a subject with a graph: at most 8 questions chosen by the graph (Р-85). */
+function PlacementRow({ test, k, disabled, onOpen }: { test: BuiltTest; k: Knowledge; disabled: boolean; onOpen: () => void }) {
+  const { pack } = useData();
+  const plan = useMemo(() => placementPlan(pack, k.graph, test.subject), [pack, k.graph, test.subject]);
+  const doc = k.placementOf(test.subject);
+  const limit = Math.min(plan.maxQuestions, plan.pool.size);
+  const known = doc ? resumePlacement(plan, doc.asked).known.length : 0;
+  const canGo = doc ? nextPlacementQuestion(plan, resumePlacement(plan, doc.asked)) !== null : true;
+  const action = !doc ? t.testStart : !doc.finishedAt && canGo ? t.testResume : t.placementShowResult;
+  return (
+    <button type="button" class="trow" disabled={disabled || plan.pool.size === 0} onClick={onOpen}>
+      <span class="ttxt">
+        <span class="ttitle">{test.title}</span>
+        <span class="meta">{t.testKind.entry} · {t.placementUpTo(limit)} · {t.aboutMin(placementMinutes(plan))}</span>
+      </span>
+      <span class="tstate num">{doc?.asked.length ? t.placementKnownShort(known, plan.topics.length) : ""}</span>
+      <span class="tact">{action}</span>
+      <span class="gchev" aria-hidden="true">›</span>
+    </button>
+  );
+}
+
 function RunView({ run, onExit }: { run: Run; onExit: () => void }) {
   const { pack, store, onError } = useData();
   const questions = useMemo(() => testQuestions(pack, run.test), [pack, run.test]);
@@ -194,8 +221,13 @@ function RunView({ run, onExit }: { run: Run; onExit: () => void }) {
   );
 }
 
-function QuestionCard({ q, n, total, last, onNext }: {
+/** One question: the answer field, then the reference points to tick (Р-17). Shared with the placement test and the mini-check. */
+export function QuestionCard({ q, n, total, last, onNext, label, note }: {
   q: Question; n: number; total: number; last: boolean; onNext: (a: Answer) => void;
+  /** Replaces «Question n of total». */
+  label?: string;
+  /** A line under the label (the topic of the question). */
+  note?: string;
 }) {
   const [text, setText] = useState("");
   const [shown, setShown] = useState(false);
@@ -208,7 +240,8 @@ function QuestionCard({ q, n, total, last, onNext }: {
   });
   return (
     <article class="qcard">
-      <div class="meta num">{t.testQuestionOf(n, total)}</div>
+      <div class="meta num">{label ?? t.testQuestionOf(n, total)}</div>
+      {note && <div class="meta qnote">{note}</div>}
       <div class="qbody"><Tex text={q.body} /></div>
       <label class="alabel">{t.testAnswerLabel}
         <textarea id="answer" class="answer" value={text} readOnly={shown} placeholder={t.testAnswerPlaceholder}
