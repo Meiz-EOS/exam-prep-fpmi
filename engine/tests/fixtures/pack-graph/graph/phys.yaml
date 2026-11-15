@@ -1,0 +1,5 @@
+topics:
+  - id: phys-g-kinematics
+    title: "Kinematics"
+    tickets: [phys-t-1]
+    requires: [math-g-deriv]

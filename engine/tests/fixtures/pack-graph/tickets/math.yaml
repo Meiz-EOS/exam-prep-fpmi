@@ -1,0 +1,6 @@
+tickets:
+  - { id: math-t-1, title: "Sets" }
+  - { id: math-t-2, title: "Maps" }
+  - { id: math-t-3, title: "Limits" }
+  - { id: math-t-4, title: "Continuity" }
+  - { id: math-t-5, title: "Derivative" }

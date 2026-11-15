@@ -2,10 +2,11 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { basename, join, relative, resolve } from "node:path";
 import type { z } from "zod";
 import type { Plugin } from "vite";
-import { CardMetaSchema, CardSchema, ExamTicketsFileSchema, ItemsFileSchema, PackSchema, QuestionSchema, RemapFileSchema, TestMetaSchema, TicketsFileSchema, TheoryEntrySchema, type BuiltExamTicket, type BuiltPack, type BuiltTest, type BuiltTicket, type Item, type Question } from "../../engine/src/content/schema.ts";
+import { CardMetaSchema, CardSchema, ENTRY_MINUTES, ExamTicketsFileSchema, ItemsFileSchema, PackSchema, QuestionSchema, RemapFileSchema, TestMetaSchema, TicketsFileSchema, TheoryEntrySchema, type BuiltExamTicket, type BuiltPack, type BuiltTest, type BuiltTicket, type Item, type Question } from "../../engine/src/content/schema.ts";
 import { loadPack } from "../../engine/src/content/load.ts";
 import { MdError, mdLayout, parseCardsMd, parseTestMd, parseTheoryMd, type MdLayout } from "./parse-md.ts";
 import { l2TopicParents } from "../../engine/src/content/coverage.ts";
+import { buildGraph } from "./graph.ts";
 import { PackError, Problems, YamlSource, addIssues, loadYaml, valueAt, type PackProblem, type Path } from "./problems.ts";
 
 const virtualId = "virtual:pack";
@@ -19,6 +20,8 @@ interface Loc { file: string; line?: number | undefined }
 
 interface Ctx {
   p: Problems;
+  /** Warnings: reported by `check:pack`, never stop the build. */
+  w: Problems;
   root: string;
   /** Every id of the pack (exams, items, tickets, exam tickets, tests, questions, cards) and where it is declared first. */
   ids: Map<string, Loc>;
@@ -239,7 +242,7 @@ function buildTests(c: Ctx, subjectIds: Set<string>, ticketSubject: Map<string, 
       if (owner === undefined) c.p.add(path, `вопрос "${question.id}" ссылается на неизвестный тикет "${question.ticket}"`, line);
       else if (owner !== subject) c.p.add(path, `вопрос "${question.id}" ссылается на тикет "${question.ticket}" другого предмета (${owner})`, line);
     }
-    tests.push({ ...meta, subject, questions });
+    tests.push({ ...meta, minutes: meta.minutes ?? ENTRY_MINUTES, subject, questions });
   }
   // reuse may only pull questions of the same subject
   const questionSubject = new Map(tests.flatMap((test) => test.questions.map((question) => [question.id, test.subject] as const)));
@@ -442,9 +445,11 @@ function collect(c: Ctx): BuiltPack | undefined {
   const cards = hasCards ? buildCards(c, subjectIds, tickets) : [];
   const hasTheory = existsSync(join(root, "theory"));
   const theory = hasTheory ? buildTheory(c, subjectIds, tickets) : [];
+  const hasGraph = existsSync(join(root, "graph"));
+  const graph = hasGraph ? buildGraph({ p: c.p, w: c.w, root, claim: (file, id, line) => claim(c, file, id, line), locate: (id) => c.ids.get(id) }, subjectIds, tickets, tests) : [];
   if (c.p.list.length) return undefined;
   try {
-    return loadPack({ ...pack, items, ...(hasTickets ? { tickets, ...(Object.keys(builtTickets.remap).length ? { remap: builtTickets.remap } : {}) } : {}), ...(exam.length || existsSync(join(root, "exam")) ? { exam } : {}), ...(hasTests ? { tests } : {}), ...(hasCards ? { cards } : {}), ...(hasTheory ? { theory } : {}) });
+    return loadPack({ ...pack, items, ...(hasTickets ? { tickets, ...(Object.keys(builtTickets.remap).length ? { remap: builtTickets.remap } : {}) } : {}), ...(exam.length || existsSync(join(root, "exam")) ? { exam } : {}), ...(hasTests ? { tests } : {}), ...(hasCards ? { cards } : {}), ...(hasTheory ? { theory } : {}), ...(hasGraph ? { graph } : {}) });
   } catch (error) {
     c.p.add(root, `собранный пакет не прошёл проверку: ${error instanceof Error ? error.message : String(error)}`);
     return undefined;
@@ -452,16 +457,16 @@ function collect(c: Ctx): BuiltPack | undefined {
 }
 
 /** Checks the whole pack folder: every problem found, and the built pack when there are none. */
-export function collectPack(dir: string): { pack?: BuiltPack; problems: PackProblem[] } {
+export function collectPack(dir: string): { pack?: BuiltPack; problems: PackProblem[]; warnings: PackProblem[] } {
   const root = resolve(dir);
-  const c: Ctx = { p: new Problems(), root, ids: new Map() };
+  const c: Ctx = { p: new Problems(), w: new Problems(), root, ids: new Map() };
   try {
     const pack = collect(c);
-    if (!c.p.list.length && pack) return { pack, problems: [] };
+    if (!c.p.list.length && pack) return { pack, problems: [], warnings: c.w.list };
   } catch (error) {
     c.p.add(root, `внутренняя ошибка проверки: ${error instanceof Error ? error.message : String(error)}`);
   }
-  return { problems: c.p.list };
+  return { problems: c.p.list, warnings: c.w.list };
 }
 
 /** The built pack; throws a `PackError` with every problem (`file:line: text`, one per line) when the folder is not a valid pack. */

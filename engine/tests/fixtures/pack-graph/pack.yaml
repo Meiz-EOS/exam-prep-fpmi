@@ -1,0 +1,7 @@
+id: graph-pack
+title: Graph demo
+subjects:
+  - { id: math, name: Math }
+  - { id: phys, name: Physics }
+  - { id: chem, name: Chemistry }
+exams: []
