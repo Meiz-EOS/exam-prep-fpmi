@@ -55,7 +55,7 @@ describe("meta/day", () => {
     expect(dayFor(null, TODAY)).toEqual({ date: TODAY, done: {}, finished: [] });
   });
   it("writes absent fields as null so that a merge-patch clears them", () => {
-    expect(dayPatch({ date: TODAY, done: {}, finished: [] })).toEqual({ date: TODAY, subject: null, topic: null, done: {}, check: null, finished: [] });
+    expect(dayPatch({ date: TODAY, done: {}, finished: [] })).toEqual({ date: TODAY, subject: null, topic: null, done: {}, check: null, finished: [], parked: [] });
   });
 });
 
@@ -184,12 +184,23 @@ describe("dayPlan", () => {
     expect(blocked.noTopic).toEqual({ reason: "blocked", by: [graph.byId.get("b")] });
   });
 
-  it("changing the subject drops the untouched topic, closes a started one", () => {
+  it("changing the subject drops the untouched topic, parks a started one and brings it back", () => {
     const fresh = parseDayDoc({ date: TODAY, subject: "math", topic: "a", done: { anki: "x" } })!;
     expect(chooseSubject(fresh, "phys")).toEqual({ date: TODAY, subject: "phys", done: { anki: "x" }, finished: [] });
     expect(chooseSubject(fresh, "math")).toBe(fresh);
     const started = parseDayDoc({ date: TODAY, subject: "math", topic: "a", done: { anki: "x", theory: "y" }, check: "m1" })!;
-    expect(chooseSubject(started, "phys")).toEqual({ date: TODAY, subject: "phys", done: { anki: "x" }, finished: ["a"] });
+    const away = chooseSubject(started, "phys");
+    expect(away).toEqual({ date: TODAY, subject: "phys", done: { anki: "x" }, finished: [], parked: [{ subject: "math", topic: "a", theory: "y", attempt: "m1" }] });
+    // the parked topic survives the store (merge-patch body → parse) and returns with its ticks
+    expect(chooseSubject(parseDayDoc(dayPatch(away))!, "math")).toEqual(started);
+    // a step ticked in the other subject is parked in its turn; the Anki tick follows the day
+    const both = chooseSubject({ ...away, topic: "p", done: { ...away.done, anki: "z", theory: "q" } }, "math");
+    expect(both).toEqual({ ...started, done: { anki: "z", theory: "y" }, parked: [{ subject: "phys", topic: "p", theory: "q" }] });
+    expect(dayFor({ ...away, date: "2026-11-14" }, TODAY)).toEqual({ date: TODAY, subject: "phys", done: {}, finished: [] });
+    expect(parseDayDoc({ date: TODAY, done: {}, parked: [{ subject: "math" }, 3, { subject: "math", topic: "a", theory: null }] })?.parked).toEqual([{ subject: "math", topic: "a" }]);
+    const returned = build({ day: dayPatch(chooseSubject(parseDayDoc(dayPatch(away))!, "math")) });
+    expect(returned.topic?.id).toBe("a");
+    expect(returned.steps.find((step) => step.id === "theory")?.done).toBe(true);
     const plan = build({ day: dayPatch(chooseSubject(fresh, "phys")), marks: { ...mark("a"), ...mark("b") } });
     expect(plan).toMatchObject({ subject: "phys" });
     expect(plan.topic?.id).toBe("p");

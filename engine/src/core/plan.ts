@@ -52,6 +52,19 @@ export interface DayDoc {
   check?: string;
   /** Topics finished earlier today, before «one more topic» was asked. */
   finished: string[];
+  /** Started topics of the subjects the student switched away from today; absent when there are none. */
+  parked?: ParkedTopic[];
+}
+
+/** Today's started topic of a subject that is not the current one: it comes back with its ticks (`chooseSubject`). */
+export interface ParkedTopic { subject: string; topic: string; theory?: string; check?: string; attempt?: string }
+
+function parseParked(value: unknown): ParkedTopic[] {
+  if (!Array.isArray(value)) return [];
+  const str = (raw: Record<string, unknown>, key: "theory" | "check" | "attempt"): Partial<ParkedTopic> => typeof raw[key] === "string" ? { [key]: raw[key] } : {};
+  return value.filter((raw): raw is Record<string, unknown> => !!raw && typeof raw === "object" && !Array.isArray(raw))
+    .filter((raw) => typeof raw.subject === "string" && typeof raw.topic === "string")
+    .map((raw) => ({ subject: raw.subject as string, topic: raw.topic as string, ...str(raw, "theory"), ...str(raw, "check"), ...str(raw, "attempt") }));
 }
 
 /** Reads untrusted `meta/day`; fields set to null (cleared by a merge-patch) count as absent. */
@@ -62,6 +75,7 @@ export function parseDayDoc(value: unknown): DayDoc | null {
   const rawDone = raw.done && typeof raw.done === "object" && !Array.isArray(raw.done) ? raw.done as Record<string, unknown> : {};
   const done: DayDone = {};
   for (const key of ["anki", "theory", "check"] as const) if (typeof rawDone[key] === "string") done[key] = rawDone[key];
+  const parked = parseParked(raw.parked);
   return {
     date: raw.date,
     ...(typeof raw.subject === "string" ? { subject: raw.subject } : {}),
@@ -69,6 +83,7 @@ export function parseDayDoc(value: unknown): DayDoc | null {
     done,
     ...(typeof raw.check === "string" ? { check: raw.check } : {}),
     finished: Array.isArray(raw.finished) ? raw.finished.filter((id): id is string => typeof id === "string") : [],
+    ...(parked.length ? { parked } : {}),
   };
 }
 
@@ -80,7 +95,7 @@ export function dayFor(doc: DayDoc | null, date: string): DayDoc {
 
 /** The body to write to `meta/day`: absent fields are written as null so that a merge-patch clears them. */
 export function dayPatch(day: DayDoc): Record<string, unknown> {
-  return { date: day.date, subject: day.subject ?? null, topic: day.topic ?? null, done: { ...day.done }, check: day.check ?? null, finished: [...day.finished] };
+  return { date: day.date, subject: day.subject ?? null, topic: day.topic ?? null, done: { ...day.done }, check: day.check ?? null, finished: [...day.finished], parked: (day.parked ?? []).map((item) => ({ ...item })) };
 }
 
 const sameDay = (a: DayDoc, b: DayDoc): boolean => JSON.stringify(dayPatch(a)) === JSON.stringify(dayPatch(b));
@@ -278,17 +293,27 @@ export function dayPlan(input: PlanInput): DayPlan {
   };
 }
 
-/** `meta/day` after the student picks another subject: today's topic steps are dropped unless one is already ticked. */
+/**
+ * `meta/day` after the student picks another subject. A topic of the old subject that is under way (a ticked step or
+ * a started mini-check) is parked and comes back with its ticks when the student returns to that subject the same day;
+ * a topic nobody touched is simply dropped. The Anki tick is about the whole day and stays.
+ */
 export function chooseSubject(day: DayDoc, subject: string): DayDoc {
   if (day.subject === subject) return day;
-  if (day.done.theory !== undefined || day.done.check !== undefined) {
-    // the started topic is closed as it is; the new subject starts with a fresh one
-    const { theory: _theory, check: _check, ...done } = day.done;
-    const { topic, check: _attempt, ...base } = day;
-    return { ...base, subject, done, finished: topic !== undefined ? [...day.finished, topic] : day.finished };
+  const { topic, check: attempt, parked: was = [], ...base } = day;
+  const { theory, check, ...done } = day.done;
+  const parked = was.filter((item) => item.subject !== subject && item.subject !== day.subject);
+  if (day.subject !== undefined && topic !== undefined && (theory !== undefined || check !== undefined || attempt !== undefined)) {
+    parked.push({ subject: day.subject, topic, ...(theory !== undefined ? { theory } : {}), ...(check !== undefined ? { check } : {}), ...(attempt !== undefined ? { attempt } : {}) });
   }
-  const { topic: _topic, check: _attempt, ...base } = day;
-  return { ...base, subject };
+  const back = was.find((item) => item.subject === subject);
+  return {
+    ...base, subject,
+    ...(back ? { topic: back.topic } : {}),
+    done: { ...done, ...(back?.theory !== undefined ? { theory: back.theory } : {}), ...(back?.check !== undefined ? { check: back.check } : {}) },
+    ...(back?.attempt !== undefined ? { check: back.attempt } : {}),
+    ...(parked.length ? { parked } : {}),
+  };
 }
 
 /** `meta/day` after «one more topic»: today's topic goes to `finished`, its steps are cleared, the Anki tick stays. */
