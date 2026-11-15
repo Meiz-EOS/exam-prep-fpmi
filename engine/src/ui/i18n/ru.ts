@@ -211,6 +211,7 @@ export const ru = {
   placementStop: "Прервать и сохранить",
   placementStopHint: "Ответы уже сохранены. Тест можно продолжить позже с этого места.",
   placementDone: "Входной тест пройден",
+  placementStopped: "Тест прерван — результат сохранён",
   placementSkipped: "Входной тест пропущен",
   placementKnownOf: (_known: number, total: number) => `из ${total} ${pluralWord(total, "темы", "тем", "тем")} вы уже знаете`,
   placementAsked: (n: number, ok: number) => `Задано: ${plural(n, "вопрос", "вопроса", "вопросов")}, хороших ответов: ${ok}. Темы, до которых тест не дошёл, считаются неизученными.`,

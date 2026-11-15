@@ -62,8 +62,8 @@
 /* entry test and mini-check: built from the test run classes (tests.css) */
 .gprogress { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
 .gprogress span { display: block; height: 100%; background: var(--pen); transition: width .2s; }
-.qnote { margin-top: -8px; }
-.placement .ghost.big, .check .ghost.big { min-height: 48px; }
+.tests .qnote { margin-top: -8px; display: block; overflow: visible; -webkit-line-clamp: unset; }
+.gplacement .ghost.big, .gcheck .ghost.big { min-height: 48px; }
 .gintro h3, .gresult h3 { margin: 0; }
 .gintro p, .gresult p { margin: 0; }
 .gresult-count { color: var(--muted); display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }

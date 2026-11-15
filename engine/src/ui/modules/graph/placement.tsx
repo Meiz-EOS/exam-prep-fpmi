@@ -1,6 +1,6 @@
 // The entry test by the graph (docs/architecture/14-graph-plan.md#placement-screen): intro → questions one by one → result.
 // The state machine is core/placement.ts; this screen shows the question, grades it (Р-17) and saves after every answer.
-import { useMemo, useRef, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { nextTopics, subjectTopicCounts, topicLabel } from "../../../core/graph";
 import { answerPlacement, nextPlacementQuestion, placementAttemptTest, placementDoc, placementDocId, placementMinutes, placementPlan, resumePlacement, startPlacement, stopPlacement, type PlacementPlan, type PlacementState } from "../../../core/placement";
 import { useData } from "../../context";
@@ -77,6 +77,8 @@ export function PlacementRunner({ k, subject, backLabel, onExit, onPlan, canSkip
   };
 
   const current = run && nextPlacementQuestion(run.plan, run.state);
+  // every question (and the result) starts from the top of the screen
+  useEffect(() => { scrollTo(0, 0); }, [current?.question.id ?? ""]);
   const bar = <div class="runbar">
     <button type="button" class="ghost" onClick={onExit}>{backLabel}</button>
     <span class="meta num">{t.placementTitle(name)}</span>
@@ -99,7 +101,7 @@ export function PlacementRunner({ k, subject, backLabel, onExit, onPlan, canSkip
     };
     const n = run.state.asked.length + 1;
     const max = Math.min(run.plan.maxQuestions, Math.max(n, run.plan.pool.size));
-    return <div class="tests run placement">
+    return <div class="tests run gplacement">
       {bar}
       <div class="gprogress" role="progressbar" aria-valuemin={0} aria-valuemax={max} aria-valuenow={n - 1}><span style={{ width: `${Math.round(((n - 1) / max) * 100)}%` }} /></div>
       <QuestionCard key={current.question.id} q={current.question} n={n} total={max} last={false}
@@ -111,7 +113,7 @@ export function PlacementRunner({ k, subject, backLabel, onExit, onPlan, canSkip
 
   const unfinished = stored !== null && stored.finishedAt === undefined && nextPlacementQuestion(base, resumePlacement(base, stored.asked)) !== null;
   if (!stored || unfinished) {
-    return <div class="tests run placement">
+    return <div class="tests run gplacement">
       {bar}
       <div class="qcard gintro">
         <h3>{t.placementTitle(name)}</h3>
@@ -130,10 +132,10 @@ export function PlacementRunner({ k, subject, backLabel, onExit, onPlan, canSkip
   const counts = subjectTopicCounts(k.graph, k.states, subject);
   const first = nextTopics(k.graph, k.states, subject)[0];
   const canContinue = stored.asked.length > 0 && nextPlacementQuestion(base, result) !== null;
-  return <div class="tests run placement">
+  return <div class="tests run gplacement">
     {bar}
     <div class="qcard gresult">
-      <h3>{stored.asked.length ? t.placementDone : t.placementSkipped}</h3>
+      <h3>{!stored.asked.length ? t.placementSkipped : canContinue ? t.placementStopped : t.placementDone}</h3>
       <p class="gresult-count"><span class="num gbig">{result.known.length}</span> {t.placementKnownOf(result.known.length, base.topics.length)}</p>
       <p class="ghint">{t.placementAsked(stored.asked.length, stored.asked.filter((answer) => answer.ok).length)}</p>
       <p class="gstart">{first ? <>{t.placementStartFrom} <strong>{topicLabel(k.graph, first.id)}</strong></> : counts.locked ? t.planBlocked : t.planAllTopics}</p>

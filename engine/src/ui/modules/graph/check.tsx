@@ -1,6 +1,6 @@
 // The mini-check of a topic (docs/architecture/14-graph-plan.md#today, step 3): about three short questions,
 // self-graded like any test (Р-17); the answers go to `attempts` as `check-<topic>`; passing marks the topic learned.
-import { useRef, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import type { Question } from "../../../content/schema";
 import { topicLabel, type Topic } from "../../../core/graph";
 import { CHECK_PASS, checkAttemptTest, checkResult } from "../../../core/plan";
@@ -52,8 +52,10 @@ export function CheckRunner({ k, topic, questions, attempt, backLabel, doneLabel
     }
   };
 
+  // every question (and the result) starts from the top of the screen
+  useEffect(() => { scrollTo(0, 0); }, [index]);
   const result = checkResult(answers);
-  return <div class="tests run check">
+  return <div class="tests run gcheck">
     <div class="runbar">
       <button type="button" class="ghost" onClick={onExit}>{backLabel}</button>
       <span class="meta num">{t.checkTitle(topicLabel(k.graph, topic.id))}</span>

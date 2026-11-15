@@ -206,6 +206,7 @@ export const en: Strings = {
   placementStop: "Stop and save",
   placementStopHint: "Your answers are already saved. The test can be continued later from here.",
   placementDone: "Entry test done",
+  placementStopped: "Test stopped — the result is saved",
   placementSkipped: "Entry test skipped",
   placementKnownOf: (_known: number, total: number) => `of ${total} topics you already know`,
   placementAsked: (n: number, ok: number) => `Asked: ${n}, good answers: ${ok}. Topics the test did not reach count as not learned.`,

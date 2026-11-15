@@ -157,4 +157,19 @@ describe("agent diff", () => {
       expect(attempts[1]!.test).toBe("cpp-entry");
     });
   });
+
+describe("agent diff: placement and mini-check attempts", () => {
+  it("reports answers of placement-<subject> and check-<topic> and counts them in the subject's readiness", () => {
+    const withGraph: BuiltPack = { ...pack, graph: [{ id: "cpp-g-one", subject: "cpp", title: "One", tickets: ["cpp-t1"], requires: [] }] };
+    const answer = (at: string) => ({ q: "cpp-q-1", at, text: "ответ", hits: [0, 1], self: 1 });
+    const attempts = [
+      { test: "placement-cpp", startedAt: "2026-11-15T10:00:00Z", answers: [answer("2026-11-15T10:00:00Z")] },
+      { test: "check-cpp-g-one", startedAt: "2026-11-15T11:00:00Z", answers: [answer("2026-11-15T11:00:00Z")] },
+    ];
+    const lines = report(withGraph, [], {}, attempts, {}).lines.join("\n");
+    expect(lines).toContain("cpp-q-1 (placement-cpp): 1.00");
+    expect(lines).toContain("cpp-q-1 (check-cpp-g-one): 1.00");
+    expect(lines).toMatch(/Готовность по предметам \(1\):\n\s+C\+\+: /);
+  });
+});
 });
