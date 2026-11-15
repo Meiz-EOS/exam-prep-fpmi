@@ -1,6 +1,8 @@
 # Граф тем C++ (Р-81). Порядок тем в файле — порядок изучения.
 # requires — только прямые содержательные зависимости; «мягкие» (одна карточка
-# ссылается на более раннюю тему) обеспечены порядком файла.
+# ссылается на более раннюю тему) обеспечены порядком файла: так лямбды стоят
+# после move (захват перемещением), constexpr — после исключений (throw в
+# constexpr), шаблоны — после перегрузки операторов.
 topics:
   - id: cpp-g-basics
     title: "Типы, выражения, управляющие инструкции, CE/RE/UB"
@@ -44,7 +46,7 @@ topics:
   - id: cpp-g-templates
     title: "Шаблоны: основы, перегрузка, специализации"
     tickets: [cpp-t-020, cpp-t-021, cpp-t-046, cpp-t-047]
-    requires: [cpp-g-rule-of-three]
+    requires: [cpp-g-classes]
 
   - id: cpp-g-virtual
     title: "Виртуальные функции, vtable, RTTI"
@@ -57,8 +59,8 @@ topics:
     requires: [cpp-g-virtual]
 
   - id: cpp-g-exceptions
-    title: "Исключения"
-    tickets: [cpp-t-024, cpp-t-051, cpp-t-052, cpp-t-053]
+    title: "Исключения и идиома RAII"
+    tickets: [cpp-t-024, cpp-t-051, cpp-t-052, cpp-t-053, cpp-t-025]
     requires: [cpp-g-inheritance]
 
   - id: cpp-g-containers
@@ -69,22 +71,22 @@ topics:
   - id: cpp-g-move
     title: "Move-семантика, lvalue и rvalue"
     tickets: [cpp-t-028, cpp-t-061, cpp-t-062]
-    requires: [cpp-g-containers]
+    requires: [cpp-g-rule-of-three, cpp-g-containers]
 
   - id: cpp-g-lambdas
     title: "Лямбды и вызываемые объекты"
     tickets: [cpp-t-030, cpp-t-067, cpp-t-094, cpp-t-070, cpp-t-072]
-    requires: [cpp-g-move]
+    requires: [cpp-g-rule-of-three, cpp-g-containers]
 
   - id: cpp-g-smart-pointers
-    title: "RAII и умные указатели"
-    tickets: [cpp-t-025, cpp-t-066, cpp-t-090, cpp-t-091]
+    title: "Умные указатели: unique_ptr, shared_ptr, weak_ptr"
+    tickets: [cpp-t-066, cpp-t-090, cpp-t-091]
     requires: [cpp-g-exceptions, cpp-g-move]
 
   - id: cpp-g-constexpr
     title: "constexpr и вычисления при компиляции"
     tickets: [cpp-t-031, cpp-t-048, cpp-t-100]
-    requires: [cpp-g-templates, cpp-g-exceptions]
+    requires: [cpp-g-templates]
 
   - id: cpp-g-metafunctions
     title: "Метафункции, variadic-шаблоны, свёртки"

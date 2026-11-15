@@ -500,6 +500,27 @@ int main() {
 - Владение передают перемещением: `auto v = std::move(u);`, после этого `u` равен `nullptr`.
 - `std::shared_ptr` копировать можно: копия увеличивает счётчик ссылок, объект удаляется с последним владельцем.
 
+## cpp-q-064
+ticket: cpp-t-090 · level: L1
+Что напечатает программа и почему?
+```cpp
+#include <iostream>
+#include <memory>
+int main() {
+    auto a = std::make_shared<int>(1);
+    auto b = a;
+    std::weak_ptr<int> w = a;
+    std::cout << a.use_count();
+    a.reset();
+    b.reset();
+    std::cout << w.expired();
+}
+```
+### Эталон
+- Вывод: `21`.
+- Копия `shared_ptr` увеличивает счётчик владельцев до 2; `weak_ptr` объектом не владеет и в `use_count` не входит.
+- После сброса обоих `shared_ptr` объект уничтожен, поэтому `w.expired()` истинно (а `w.lock()` вернул бы пустой `shared_ptr`).
+
 ## cpp-q-020
 ticket: cpp-t-031 · level: L0
 Скомпилируется ли объявление `a`? Объясните отличие `const` и `constexpr`.
