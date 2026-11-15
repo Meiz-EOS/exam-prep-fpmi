@@ -1,0 +1,115 @@
+# Граф тем АиСД (Р-81). Порядок тем в файле — порядок изучения.
+topics:
+  - id: aisd-g-model
+    title: "RAM-модель, асимптотика, префиксные суммы, бинарный поиск"
+    tickets: [aisd-t-001, aisd-t-002, aisd-t-003, aisd-t-004]
+
+  - id: aisd-g-merge-sort
+    title: "Задача сортировки, сортировка слиянием, инверсии"
+    tickets: [aisd-t-005, aisd-t-008, aisd-t-009, aisd-t-010]
+    requires: [aisd-g-model]
+
+  - id: aisd-g-sort-lower-bound
+    title: "Нижняя оценка сортировки сравнениями"
+    tickets: [aisd-t-006, aisd-t-007]
+    requires: [aisd-g-merge-sort]
+
+  - id: aisd-g-quicksort
+    title: "Быстрая сортировка и порядковые статистики"
+    tickets: [aisd-t-011, aisd-t-012, aisd-t-013, aisd-t-014]
+    requires: [aisd-g-merge-sort]
+
+  - id: aisd-g-linear-sorts
+    title: "Сортировка подсчётом и цифровая сортировка"
+    tickets: [aisd-t-015, aisd-t-016]
+    requires: [aisd-g-merge-sort]
+
+  - id: aisd-g-lists
+    title: "Списки, стек и очередь на списке"
+    tickets: [aisd-t-017, aisd-t-018, aisd-t-023]
+    requires: [aisd-g-model]
+
+  - id: aisd-g-stack-algos
+    title: "Алгоритмы на стеке: скобки, ближайший меньший, ОПЗ, минимум в стеке"
+    tickets: [aisd-t-019, aisd-t-020, aisd-t-021, aisd-t-022]
+    requires: [aisd-g-lists]
+
+  - id: aisd-g-heap
+    title: "Двоичная куча: определение и операции"
+    tickets: [aisd-t-025, aisd-t-026, aisd-t-027, aisd-t-030]
+    requires: [aisd-g-model]
+
+  - id: aisd-g-heapsort
+    title: "Построение кучи за линейное время и Heap Sort"
+    tickets: [aisd-t-028, aisd-t-029]
+    requires: [aisd-g-heap, aisd-g-merge-sort]
+
+  - id: aisd-g-binomial
+    title: "Биномиальная куча"
+    tickets: [aisd-t-032, aisd-t-033]
+    requires: [aisd-g-heap]
+
+  - id: aisd-g-amortized
+    title: "Амортизационный анализ: метод монеток, очередь на двух стеках, вектор"
+    tickets: [aisd-t-034, aisd-t-031, aisd-t-024, aisd-t-035, aisd-t-036]
+    requires: [aisd-g-stack-algos, aisd-g-heap]
+
+  - id: aisd-g-segtree
+    title: "Sparse Table и дерево отрезков"
+    tickets: [aisd-t-037, aisd-t-038, aisd-t-039, aisd-t-040]
+    requires: [aisd-g-model]
+
+  - id: aisd-g-segtree-advanced
+    title: "Дерево отрезков: Fractional Cascading, динамическое дерево, сжатие координат"
+    tickets: [aisd-t-041, aisd-t-042, aisd-t-043]
+    requires: [aisd-g-segtree, aisd-g-merge-sort]
+
+  - id: aisd-g-persistent
+    title: "Персистентное дерево отрезков"
+    tickets: [aisd-t-044, aisd-t-045, aisd-t-046]
+    requires: [aisd-g-segtree-advanced]
+
+  - id: aisd-g-fenwick
+    title: "Дерево Фенвика"
+    tickets: [aisd-t-047, aisd-t-048, aisd-t-049, aisd-t-050]
+    requires: [aisd-g-model]
+
+  - id: aisd-g-bst
+    title: "Дерево поиска и AVL-дерево"
+    tickets: [aisd-t-051, aisd-t-052, aisd-t-053, aisd-t-054]
+    requires: [aisd-g-lists]
+
+  - id: aisd-g-splay
+    title: "Splay-дерево, метод потенциалов, неявный ключ"
+    tickets: [aisd-t-055, aisd-t-056, aisd-t-057, aisd-t-058, aisd-t-059, aisd-t-060, aisd-t-061]
+    requires: [aisd-g-bst, aisd-g-amortized]
+
+  - id: aisd-g-hashing
+    title: "Хеш-функции и хеш-таблицы"
+    tickets: [aisd-t-062, aisd-t-063, aisd-t-064, aisd-t-065]
+    requires: [aisd-g-amortized]
+
+  - id: aisd-g-filters
+    title: "Фильтр Блума и фильтр кукушки"
+    tickets: [aisd-t-066, aisd-t-067]
+    requires: [aisd-g-hashing]
+
+  - id: aisd-g-skip-treap
+    title: "Skip List и декартово дерево"
+    tickets: [aisd-t-068, aisd-t-069, aisd-t-070, aisd-t-071]
+    requires: [aisd-g-bst, aisd-g-heap, aisd-g-stack-algos]
+
+  - id: aisd-g-b-tree
+    title: "B-дерево"
+    tickets: [aisd-t-072, aisd-t-073, aisd-t-074, aisd-t-075]
+    requires: [aisd-g-bst]
+
+  - id: aisd-g-rb-tree
+    title: "Красно-чёрное дерево"
+    tickets: [aisd-t-076, aisd-t-077, aisd-t-078, aisd-t-079]
+    requires: [aisd-g-bst]
+
+  - id: aisd-g-bst-compare
+    title: "Сравнение реализаций дерева поиска"
+    tickets: [aisd-t-080]
+    requires: [aisd-g-splay, aisd-g-skip-treap, aisd-g-b-tree, aisd-g-rb-tree]

@@ -60,6 +60,10 @@ const testMetaRules = (meta: { kind: string; exam?: string; covers?: string[] },
   examFieldRule(meta, ctx);
   coversFieldRule(meta, ctx);
 };
+/** Р-84: `minutes` means nothing for an entry pool (the placement asks at most 8 questions), so only the other kinds must give it. */
+const minutesFieldRule = (meta: { kind: string; minutes?: number | undefined }, ctx: z.RefinementCtx): void => {
+  if (meta.kind !== "entry" && meta.minutes === undefined) ctx.addIssue({ code: "custom", path: ["minutes"], message: `kind ${meta.kind} requires minutes` });
+};
 const testLevelRule = (meta: { kind: string; level?: string }, ctx: z.RefinementCtx): void => {
   // Р-44, Р-51: L2 tests exist for exam tickets and for topics.
   if (meta.level !== undefined && meta.kind !== "ticket" && meta.kind !== "topic") ctx.addIssue({ code: "custom", path: ["level"], message: "level is only allowed with kind ticket or topic" });
@@ -72,9 +76,12 @@ export const TestMetaSchema = z.object({
   exam: idSchema.optional(),
   covers: z.array(idSchema).optional(),
   level: z.literal("L2").optional(),
-  minutes: z.number().int().positive(),
+  minutes: z.number().int().positive().optional(),
   reuse: z.array(idSchema).default([]),
-}).strict().superRefine((meta, ctx) => { testMetaRules(meta, ctx); testLevelRule(meta, ctx); });
+}).strict().superRefine((meta, ctx) => { testMetaRules(meta, ctx); testLevelRule(meta, ctx); minutesFieldRule(meta, ctx); });
+
+/** Built `minutes` of an entry test that does not give it (Р-84): 8 questions, about a minute and a half each. */
+export const ENTRY_MINUTES = 12;
 
 export const QuestionSchema = z.object({
   id: idSchema,
@@ -153,6 +160,24 @@ export const CardSchema = z.object({
   source: z.string(),
 }).strict();
 
+/** `graph/<subject>.yaml` (Р-81): topics of a subject and what each of them requires. */
+export const GraphFileSchema = z.object({ topics: z.array(z.object({
+  id: idSchema,
+  title: z.string().min(1),
+  tickets: z.array(idSchema).min(1),
+  requires: z.array(idSchema).default([]),
+  minutes: z.number().int().positive().optional(),
+}).strict()) }).strict();
+
+const BuiltTopicSchema = z.object({
+  id: idSchema,
+  subject: idSchema,
+  title: z.string().min(1),
+  tickets: z.array(idSchema).min(1),
+  requires: z.array(idSchema),
+  minutes: z.number().int().positive().optional(),
+}).strict();
+
 export const TodayDocSchema = z.object({
   date: dateSchema,
   plan: z.array(z.object({
@@ -217,6 +242,8 @@ export const BuiltPackSchema = z.object({
   tests: z.array(BuiltTestSchema).optional(),
   cards: z.array(CardSchema).optional(),
   theory: z.array(TheoryEntrySchema).optional(),
+  /** Topics of every subject that has a graph, already in the canonical learning order (Р-82). */
+  graph: z.array(BuiltTopicSchema).optional(),
 }).strict();
 
 export type Pack = z.infer<typeof PackSchema>;
@@ -230,3 +257,4 @@ export type BuiltTest = z.infer<typeof BuiltTestSchema>;
 export type Question = z.infer<typeof QuestionSchema>;
 export type Card = z.infer<typeof CardSchema>;
 export type TheoryEntry = z.infer<typeof TheoryEntrySchema>;
+export type BuiltTopic = z.infer<typeof BuiltTopicSchema>;

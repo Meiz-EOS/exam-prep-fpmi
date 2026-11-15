@@ -4,8 +4,17 @@ title: "C++ — вывод типов, владение и callable (вопро�
 kind: topic
 covers: [cpp-t-064, cpp-t-065, cpp-t-066, cpp-t-067, cpp-t-068, cpp-t-069]
 minutes: 44
-reuse: [cpp-q-030, cpp-q-032]
+reuse: [cpp-q-032]
 ---
+## cpp-q-030
+ticket: cpp-t-066 · level: L2
+Напишите функцию `make_box`, которая принимает `int` и возвращает `std::unique_ptr<int>` на динамически созданное целое с этим значением. Используйте `std::make_unique`.
+### Эталон
+- Сигнатура: `std::unique_ptr<int> make_box(int value)`.
+- Тело возвращает `std::make_unique<int>(value)`.
+- Нужен заголовок `<memory>`.
+- Владение остаётся у возвращённого `unique_ptr`; ручной `delete` не нужен.
+
 ## cpp-q-601
 ticket: cpp-t-064 · level: L0
 Что возвращает `decltype(x)` для объявленной переменной `x`, и как `decltype(auto)` выводит тип?

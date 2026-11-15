@@ -9,6 +9,7 @@ import type { ModuleDef } from "./ui/app";
 import { t } from "./ui/i18n";
 import { SdachiEditable } from "./ui/modules/sdachi/edit";
 import { Tests } from "./ui/modules/tests";
+import { TopicMap } from "./ui/modules/graph/map";
 import { Ready } from "./ui/modules/ready";
 import { Today } from "./ui/modules/today";
 import { Theory } from "./ui/modules/theory";
@@ -16,6 +17,8 @@ import { Root } from "./ui/root";
 
 const modules: ModuleDef[] = [
   { id: "today", title: t.navToday, component: Today },
+  // The topic map exists only when some subject has a graph (14-graph-plan.md).
+  ...(pack.graph?.length ? [{ id: "map", title: t.navMap, component: TopicMap }] : []),
   ...(pack.tickets?.length ? [{ id: "theory", title: t.navTheory, component: Theory }] : []),
   { id: "sdachi", title: t.navSdachi, component: () => <SdachiEditable /> },
   // The nav entry exists only when the pack has tests.

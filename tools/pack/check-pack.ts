@@ -1,10 +1,10 @@
 // Checks a pack folder and prints every problem at once as `file:line: text` (docs/architecture/13-classmates.md#format).
 //   npm run check:pack [path]     default path: the pack from zachetka.local.json (tools/lib/settings.ts)
-// Exit code 1 when there is at least one problem. The rules live in build-pack.ts (`collectPack`), the wording in problems.ts.
+// Exit code 1 when there is at least one problem; warnings (`предупреждение: …`) do not change it. The rules live in build-pack.ts (`collectPack`), the wording in problems.ts.
 import { relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { collectPack } from "./build-pack.ts";
-import { formatProblem, type PackProblem } from "./problems.ts";
+import { formatProblem, formatWarning, type PackProblem } from "./problems.ts";
 import { loadSettings } from "../lib/settings.ts";
 
 /** The path relative to `base`, or the absolute one when the pack lies outside of it. */
@@ -15,14 +15,16 @@ function shownPath(dir: string, base: string): string {
 
 export interface PackCheck {
   problems: PackProblem[];
+  /** What does not stop the build (Р-84: an entry pool that does not fit the graph yet). */
+  warnings: PackProblem[];
   /** `ok: <path> (N items, ...)` when the pack is valid. */
   summary?: string;
 }
 
 /** Validates the pack folder `dir`: all problems, or a one-line summary of what the pack contains. */
 export function checkPack(dir: string, base = process.cwd()): PackCheck {
-  const { pack, problems } = collectPack(dir);
-  if (problems.length || !pack) return { problems };
+  const { pack, problems, warnings } = collectPack(dir);
+  if (problems.length || !pack) return { problems, warnings };
   const questions = (pack.tests ?? []).reduce((sum, test) => sum + test.questions.length, 0);
   const counts = [
     `${pack.subjects.length} subjects`, `${pack.items.length} items`,
@@ -31,8 +33,9 @@ export function checkPack(dir: string, base = process.cwd()): PackCheck {
     ...(pack.tests ? [`${pack.tests.length} tests, ${questions} questions`] : []),
     ...(pack.cards ? [`${pack.cards.length} cards`] : []),
     ...(pack.theory ? [`${pack.theory.length} theory entries`] : []),
+    ...(pack.graph ? [`${pack.graph.length} topics`] : []),
   ];
-  return { problems: [], summary: `ok: ${shownPath(dir, base)} (${counts.join(", ")})` };
+  return { problems: [], warnings, summary: `ok: ${shownPath(dir, base)} (${counts.join(", ")})` };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
@@ -43,7 +46,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
     console.error(`zachetka check:pack: ${(error as Error).message}`);
     process.exit(1);
   }
-  const { problems, summary } = checkPack(dir);
+  const { problems, warnings, summary } = checkPack(dir);
+  for (const warning of warnings) console.log(formatWarning(warning, process.cwd()));
   if (problems.length) {
     for (const problem of problems) console.log(formatProblem(problem, process.cwd()));
     console.error(`\nНайдено проблем: ${problems.length}`);

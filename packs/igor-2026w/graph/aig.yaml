@@ -1,0 +1,138 @@
+# Граф тем АиГ (Р-81). Порядок тем в файле — порядок изучения (как в конспекте:
+# сначала геометрия, потом алгебра); requires — только прямые зависимости.
+topics:
+  - id: aig-g-matrices
+    title: "Матрицы и линейные операции над ними"
+    tickets: [aig-t-0101, aig-t-0102]
+
+  - id: aig-g-vectors
+    title: "Векторы и линейная зависимость"
+    tickets: [aig-t-0201, aig-t-0202, aig-t-0301, aig-t-0302]
+
+  - id: aig-g-coords-dot
+    title: "Базис и координаты, скалярное произведение"
+    tickets: [aig-t-0303, aig-t-0401, aig-t-0402, aig-t-0501]
+    requires: [aig-g-vectors, aig-g-matrices]
+
+  # Отдельная тема: определители 2-го и 3-го порядка нужны и объёму, и инвариантам кривых,
+  # а ориентация и объём кривым не нужны.
+  - id: aig-g-det3
+    title: "Определители 2-го и 3-го порядка, правило Крамера"
+    tickets: [aig-t-0601]
+    requires: [aig-g-matrices]
+
+  - id: aig-g-volume
+    title: "Ориентация, ориентированный объём"
+    tickets: [aig-t-0701, aig-t-0702]
+    requires: [aig-g-coords-dot, aig-g-det3]
+
+  - id: aig-g-cross
+    title: "Векторное произведение"
+    tickets: [aig-t-0801, aig-t-0901, aig-t-1001]
+    requires: [aig-g-volume]
+
+  - id: aig-g-line2d
+    title: "Прямая на плоскости"
+    tickets: [aig-t-1101, aig-t-1102, aig-t-1103, aig-t-1201]
+    requires: [aig-g-coords-dot]
+
+  - id: aig-g-space
+    title: "Плоскость и прямая в пространстве"
+    tickets: [aig-t-1301, aig-t-1302, aig-t-1303, aig-t-1401]
+    requires: [aig-g-line2d, aig-g-cross]
+
+  - id: aig-g-curves-class
+    title: "Многочлены от нескольких переменных, классификация кривых второго порядка"
+    tickets: [aig-t-1501, aig-t-1502, aig-t-1503, aig-t-1601]
+    requires: [aig-g-line2d]
+
+  - id: aig-g-invariants
+    title: "Инварианты и центр кривой второго порядка"
+    tickets: [aig-t-1602, aig-t-1603, aig-t-1701]
+    requires: [aig-g-curves-class, aig-g-det3]
+
+  - id: aig-g-conics
+    title: "Эллипс, гипербола, парабола: фокусы и директрисы"
+    tickets: [aig-t-1504, aig-t-1801, aig-t-1901, aig-t-1902]
+    requires: [aig-g-curves-class]
+
+  - id: aig-g-diameters
+    title: "Диаметры, асимптотические направления, касательные"
+    tickets: [aig-t-1505, aig-t-1903, aig-t-1904, aig-t-2001]
+    requires: [aig-g-conics, aig-g-invariants]
+
+  - id: aig-g-surfaces
+    title: "Поверхности второго порядка"
+    tickets: [aig-t-1506]
+    requires: [aig-g-conics, aig-g-space]
+
+  - id: aig-g-groups
+    title: "Группы, подгруппы, гомоморфизмы"
+    tickets: [aig-t-2101, aig-t-2104, aig-t-2105]
+
+  - id: aig-g-fields
+    title: "Кольца и поля: вычеты, характеристика, простое подполе"
+    tickets: [aig-t-2102, aig-t-2103, aig-t-2106]
+    requires: [aig-g-groups]
+
+  # Из алгебры нужно только понятие абелевой группы и слово «поле»; вычеты, характеристика
+  # и простое подполе линейным пространствам не нужны (они нужны определителю и конечным полям).
+  - id: aig-g-linspace
+    title: "Линейные пространства, подпространства, линейная оболочка"
+    tickets: [aig-t-2201, aig-t-2202, aig-t-2203]
+    requires: [aig-g-groups, aig-g-vectors]
+
+  - id: aig-g-basis-dim
+    title: "Базис и размерность, изоморфизм с Fⁿ"
+    tickets: [aig-t-2204, aig-t-2301, aig-t-2302]
+    requires: [aig-g-linspace]
+
+  - id: aig-g-sle
+    title: "Системы линейных уравнений, метод Гаусса"
+    tickets: [aig-t-2401, aig-t-2402, aig-t-2403]
+    requires: [aig-g-basis-dim, aig-g-matrices]
+
+  - id: aig-g-rank
+    title: "Ранг матрицы, обратная матрица"
+    tickets: [aig-t-2501, aig-t-2601, aig-t-2602, aig-t-2703]
+    requires: [aig-g-sle]
+
+  - id: aig-g-subspaces
+    title: "Сумма и пересечение подпространств, формула Грассмана"
+    tickets: [aig-t-2701, aig-t-2702, aig-t-2710]
+    requires: [aig-g-basis-dim]
+
+  - id: aig-g-dual
+    title: "Сопряжённое пространство, аннуляторы"
+    tickets: [aig-t-2704, aig-t-2801, aig-t-2802, aig-t-2803, aig-t-2804]
+    requires: [aig-g-rank]
+
+  - id: aig-g-linmaps
+    title: "Линейные отображения и их матрицы"
+    tickets: [aig-t-2901, aig-t-2902, aig-t-2903, aig-t-2904]
+    requires: [aig-g-basis-dim, aig-g-matrices]
+
+  - id: aig-g-linmaps-rank
+    title: "Ранг отображения, замена базиса, произведение отображений"
+    tickets: [aig-t-2905, aig-t-2906, aig-t-2907]
+    requires: [aig-g-linmaps, aig-g-rank, aig-g-coords-dot]
+
+  - id: aig-g-perms
+    title: "Перестановки и подстановки, чётность"
+    tickets: [aig-t-3101, aig-t-3102, aig-t-3201]
+    requires: [aig-g-groups]
+
+  - id: aig-g-det
+    title: "Определитель порядка n, теорема Лапласа"
+    tickets: [aig-t-3202, aig-t-3203, aig-t-3204, aig-t-3205]
+    requires: [aig-g-perms, aig-g-fields, aig-g-matrices]
+
+  - id: aig-g-group-thms
+    title: "Теорема Кэли, циклические группы, теорема Лагранжа"
+    tickets: [aig-t-3301, aig-t-3302, aig-t-3401, aig-t-3402, aig-t-2107]
+    requires: [aig-g-perms]
+
+  - id: aig-g-field-ext
+    title: "Конечные поля и поле ℂ"
+    tickets: [aig-t-2303, aig-t-3601]
+    requires: [aig-g-basis-dim, aig-g-fields, aig-g-matrices]

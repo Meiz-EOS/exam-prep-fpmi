@@ -6,7 +6,8 @@ export interface TodayPlan {
   stale: boolean;
 }
 
-function moscowDate(now: Date): string {
+/** Calendar date in Moscow: the day of the agent's plan (Р-19) and of the app's daily plan (Р-88). */
+export function moscowDate(now: Date): string {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/Moscow", year: "numeric", month: "2-digit", day: "2-digit",
   }).formatToParts(now);

@@ -9,7 +9,7 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from build import guid, mathjax
+from build import guid, mathjax, placement
 
 SEP = "\x1f"
 TAGS = {1: "ошибка", 2: "лишняя"}
@@ -20,13 +20,13 @@ def deck_names(conn):
 
 
 def expected_cards(pack):
-    subjects = {subject["id"]: subject["name"] for subject in pack.get("subjects", [])}
+    placed = placement(pack)
     result = {}
     for card in pack.get("cards", []):
         result[guid(pack["id"], card["id"])] = {
             "id": card["id"], "question": mathjax(card["question"]),
             "answer": mathjax(card["answer"]), "source": card["source"],
-            "deck": f"zachetka::{subjects[card['subject']]}::{card['deck']}",
+            "deck": placed[card["id"]][0],
         }
     return result
 

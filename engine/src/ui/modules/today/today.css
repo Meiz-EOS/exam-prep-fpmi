@@ -20,3 +20,48 @@
 .today-anki li, .today-weak li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
 .today-anki li span, .today-weak li span { color: var(--muted); flex: none; font-size: 12px; }
 .today-note { border-top: 1px solid var(--line); padding-top: 8px; }
+
+/* the plan of the day (14-graph-plan.md#today) */
+.today-strip { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--red); border-radius: 10px; overflow: hidden; }
+.today-strip-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 34px; padding: 5px 10px; color: var(--ink); text-decoration: none; font-size: 13.5px; }
+.today-strip-row + .today-strip-row, .today-strip-more { border-top: 1px solid var(--line); }
+.today-strip-row:hover, .today-strip-more:hover { background: var(--card-hi); }
+.today-strip-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.today-strip-ctx { color: var(--muted); }
+.today-strip-more { padding: 6px 10px; color: var(--pen); text-decoration: none; font-size: 13px; }
+.plan-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.today .plan-head h2 { color: var(--ink); font-size: 20px; letter-spacing: 0; text-transform: none; }
+.plan-total { color: var(--muted); font-size: 13.5px; }
+.plan-go { width: 100%; min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; padding: 8px 14px; border-radius: 12px; }
+.plan-go:disabled { opacity: .5; }
+.plan-go-main { font-size: 17px; }
+.plan-go-sub { font-size: 12.5px; font-weight: 400; opacity: .8; overflow-wrap: anywhere; text-align: center; }
+.plan-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.plan-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; padding: 10px 12px 10px 10px; align-items: start; }
+.plan-step + .plan-step { border-top: 1px solid var(--line); }
+.plan-step.current { background: var(--card-hi); box-shadow: inset 3px 0 0 var(--pen); }
+.plan-step .today-check, .plan-num { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 15px; }
+.plan-step .today-check { color: var(--muted); }
+.plan-step .today-check.checked { color: var(--green); }
+.plan-step .today-check:disabled { cursor: default; opacity: .6; }
+.plan-num { border: 2px dashed var(--line); color: var(--muted); }
+.plan-num.checked { border: 2px solid var(--green); background: var(--green-soft); color: var(--green); font-weight: 700; }
+.plan-step-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.plan-step-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1px 10px; align-items: baseline; width: 100%; min-height: 40px; padding: 0; text-align: left; background: transparent; border: 0; }
+.plan-step-head:disabled { cursor: default; color: inherit; }
+.plan-step-title { font-weight: 600; overflow-wrap: anywhere; }
+.plan-step.done .plan-step-title { color: var(--muted); text-decoration: line-through; }
+.plan-step-min { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.plan-step-sub { grid-column: 1 / -1; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.plan-step-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding-bottom: 4px; }
+.plan-hint { margin: 0; font-size: 13.5px; color: var(--muted); }
+.plan-acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.plan-acts button, .plan-link { min-height: 44px; }
+.plan-link { display: inline-flex; align-items: center; color: var(--ink); text-decoration: none; }
+.plan-done { display: flex; flex-direction: column; gap: 8px; border-color: var(--green); background: var(--green-soft); }
+.plan-done h3 { margin: 0; font-size: 18px; color: var(--green); }
+.plan-done p { margin: 0; }
+.plan-note { margin: 0; color: var(--muted); font-size: 13.5px; }
+.today-agent > summary { display: flex; justify-content: space-between; gap: 10px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; min-height: 28px; align-items: center; }
+.today-agent[open] > summary { margin-bottom: 8px; }
+.today-agent { display: block; }

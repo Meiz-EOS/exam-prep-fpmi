@@ -10,6 +10,7 @@ import type { BuiltPack, BuiltTest, Question } from "../../engine/src/content/sc
 import { mergeView, type ProgressDoc, type ViewItem } from "../../engine/src/core/merge.ts";
 import { buildPack } from "../pack/build-pack.ts";
 import { loadSettings } from "../lib/settings.ts";
+import { attemptSubject } from "../../engine/src/core/plan.ts";
 import { type Attempt, type Answer, subjectReady, type SubjectReady, type Level } from "../../engine/src/core/ready.ts";
 
 /** What is remembered per item between sessions. */
@@ -97,10 +98,8 @@ function answerChanges(attempts: Attempt[], seenAttempts: SeenAttempts) {
 function subjectLines(pack: BuiltPack, attempts: Attempt[]): string[] {
   const lines: string[] = [];
   for (const subject of pack.subjects) {
-    const subjectAttempts = attempts.filter((a) => {
-      const test = pack.tests?.find((t) => t.id === a.test);
-      return test?.subject === subject.id;
-    });
+    // placement-<subject> and check-<topic> name no test of the pack (14-graph-plan.md#progress): attemptSubject resolves them
+    const subjectAttempts = attempts.filter((a) => attemptSubject(pack, a.test) === subject.id);
     if (subjectAttempts.length === 0) continue;
     const ready: SubjectReady = subjectReady(subject.id, pack, subjectAttempts, new Date());
     const levels: Level[] = ["L0", "L1", "L2"];

@@ -1,0 +1,13 @@
+topics:
+  - id: math-g-deriv
+    title: "Derivative"
+    tickets: [math-t-5]
+    requires: [math-g-limits]
+    minutes: 30
+  - id: math-g-sets
+    title: "Sets and maps"
+    tickets: [math-t-1, math-t-2]
+  - id: math-g-limits
+    title: "Limits and continuity"
+    tickets: [math-t-3, math-t-4]
+    requires: [math-g-sets]

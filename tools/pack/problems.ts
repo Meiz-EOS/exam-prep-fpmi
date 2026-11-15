@@ -18,6 +18,11 @@ export function formatProblem(problem: PackProblem, base?: string): string {
   return `${file}${problem.line !== undefined ? `:${problem.line}` : ""}: ${problem.text}`;
 }
 
+/** A warning as `check:pack` prints it: the pack still builds. */
+export function formatWarning(problem: PackProblem, base?: string): string {
+  return `предупреждение: ${formatProblem(problem, base)}`;
+}
+
 export class Problems {
   list: PackProblem[] = [];
   add(file: string, text: string, line?: number): void {
