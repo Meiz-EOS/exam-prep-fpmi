@@ -108,8 +108,12 @@ describe("daily plan with a graph", () => {
     await click("#plan-go");
     await click("#plan-anki-done");
     expect(q('[data-step="theory"]').textContent).toContain("zachetka::Матан::03 Тема C");
+    // topic C has no theory in the pack: the step says what to read instead of «tap for the theory»
+    expect(q("#plan-topic-how").textContent).toBe(t.planTopicHowNone);
+    expect(q('[data-step="theory"] .plan-step-sub').textContent).toBe(t.planTopicSubNone(1));
     await click(".gticket");
     expect(q(".sheet").textContent).toContain("Билет c");
+    expect(q(".sheet .theory-missing-how").textContent).toBe(t.theoryMissingHow);
     await click(".sheet .x");
     await click("#plan-theory-done");
     expect((await meta("day"))?.done).toMatchObject({ anki: expect.any(String), theory: expect.any(String) });

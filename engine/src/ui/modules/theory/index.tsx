@@ -62,7 +62,7 @@ export function TicketSheet({ id, attempts, onOpen, onClose }: { id: string; att
       {entry.skeleton && <section><h3>{t.theorySkeleton}</h3><ol>{entry.skeleton.map((step, index) => <li key={index}><MathText text={step} /></li>)}</ol></section>}
       {!!entry.reliesOn?.length && <section><h3>{t.theoryRelies}</h3><ul class="theory-relies">{entry.reliesOn.map((other) => <li key={other}><button type="button" onClick={() => onOpen(other)}>{tickets.find((ticket) => ticket.id === other)?.title ?? other}</button></li>)}</ul></section>}
       {selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}
-    </div> : <div class="theory-detail"><p class="theory-missing">{t.theoryMissing}</p>{selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}</div>}
+    </div> : <div class="theory-detail"><p class="theory-missing">{t.theoryMissing}</p><p class="theory-missing-how">{t.theoryMissingHow}</p>{selected.src && <p class="theory-source"><span>{t.theorySource}: </span>{selected.src}</p>}</div>}
     <div class="theory-detail-levels">{levels.map((level) => <span key={level}>{level} <strong>{valueLabel(selected, level, pack.tests ?? [], attempts, pack.remap ?? {})}</strong></span>)}</div>
   </Sheet>;
 }

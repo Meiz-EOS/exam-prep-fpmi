@@ -7,7 +7,7 @@ import type { TodayDoc } from "../../../content/schema";
 import { hasGraph, topicLabel } from "../../../core/graph";
 import { hotList } from "../../../core/hot";
 import { mergeView } from "../../../core/merge";
-import { chooseSubject, DAY_DOC, type DayDoc, dayPatch, dayPlan, oneMoreTopic, type PlanStep } from "../../../core/plan";
+import { chooseSubject, DAY_DOC, type DayDoc, dayPatch, dayPlan, oneMoreTopic, type PlanStep, theoryCover } from "../../../core/plan";
 import { subjectReady } from "../../../core/ready";
 import { todayPlan, weakestTickets } from "../../../core/today";
 import { useData } from "../../context";
@@ -93,7 +93,7 @@ function PlanToday({ k }: { k: Knowledge }) {
   const sub = (step: PlanStep): ComponentChildren => {
     if (step.id === "placement") return step.asked > 0 ? t.planPlacementResume(step.asked) : t.planPlacementSub;
     if (step.id === "anki") return step.due === null ? t.planAnkiSub : t.planAnkiDue(step.due);
-    if (step.id === "theory") return placementPending ? t.planTopicProvisional : t.planTopicSub(step.tickets.length);
+    if (step.id === "theory") return placementPending ? t.planTopicProvisional : theoryCover(step.tickets) === "none" ? t.planTopicSubNone(step.tickets.length) : t.planTopicSub(step.tickets.length);
     if (step.done) return plan.topicLearned ? t.planCheckPassed : t.planCheckFailed;
     return step.questions.length ? t.planCheckSub(step.questions.length) : t.planCheckNone;
   };
@@ -106,7 +106,7 @@ function PlanToday({ k }: { k: Knowledge }) {
       <div class="plan-acts"><button type="button" class="primary" id="plan-anki-done" disabled={k.ro} onClick={() => tick("anki", true)}>{t.planMarkDone}</button></div>
     </>;
     if (step.id === "theory") return <>
-      <p class="plan-hint">{t.planTopicHow}</p>
+      <p class="plan-hint" id="plan-topic-how">{{ all: t.planTopicHow, some: t.planTopicHowSome, none: t.planTopicHowNone }[theoryCover(step.tickets)]}</p>
       <TicketList tickets={step.topic.tickets} onTicket={setTicket} />
       <DeckLine deck={step.deck} />
       {!placementPending && <div class="plan-acts">

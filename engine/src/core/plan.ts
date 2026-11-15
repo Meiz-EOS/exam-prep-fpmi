@@ -152,6 +152,12 @@ export function ankiMinutes(due: number | null): number {
 }
 
 export interface PlanTicket { id: string; title: string; src?: string; theory: boolean }
+/** How much of a topic has theory in the pack: the «new topic» step tells what to read accordingly. */
+export type TheoryCover = "all" | "some" | "none";
+export function theoryCover(tickets: readonly Pick<PlanTicket, "theory">[]): TheoryCover {
+  const n = tickets.filter((ticket) => ticket.theory).length;
+  return n === 0 ? "none" : n === tickets.length ? "all" : "some";
+}
 
 export type PlanStep =
   /** The entry test of the subject is not taken yet; `asked` > 0 — a run can be continued. */

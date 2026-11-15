@@ -185,7 +185,7 @@ topic_of = {ticket: t for t in pack.get("graph", []) for ticket in t["tickets"]}
 |---|---|---|---|---|
 | 0 | Входной тест | только если у предмета есть пул и нет `meta/placement-<предмет>`; можно пропустить (пишется документ с пустым `asked` и `finishedAt`) | `placementMinutes` | наличие документа |
 | 1 | Повторения | «Повтори карточки в Anki»; число — `meta/today.anki.due`, если `anki.at` — сегодня | `ceil(due × 8 с / 60)`, без числа — 10 мин | галочка → `done.anki` |
-| 2 | Новая тема | название, билеты темы со ссылкой на теорию (`pack.theory`; нет теории — `src` билета), колода Anki, которую пора открыть (`topicDeck`) | `topicMinutes` | галочка → `done.theory` |
+| 2 | Новая тема | название, билеты темы со ссылкой на теорию (`pack.theory`; нет теории — `src` билета), колода Anki, которую пора открыть (`topicDeck`). Подсказка шага зависит от `theoryCover(tickets)`: теория есть по всем билетам / по части / ни по одному — в последнем случае «разберите билеты по своему конспекту, затем откройте колоду» | `topicMinutes` | галочка → `done.theory` |
 | 3 | Мини-проверка | 3 вопроса по теме | 2 мин на L0, 4 на L1 (Р-23) | конец прогона → `done.check` |
 
 - **Тема дня** — `meta/day.topic`, если такая тема есть, она этого предмета и не `known`; иначе `nextTopics(…)[0]`, и она записывается в `meta/day`. Так тема не меняется посреди дня после мини-проверки.
@@ -260,6 +260,7 @@ chooseSubject(day, subject): DayDoc     oneMoreTopic(day): DayDoc
 checkQuestions(pack, graph, topic, attempts, keep?, count?): Question[]
 checkMinutes(questions): number     checkResult(answers): { value, passed } | null     ankiMinutes(due | null): number
 checkAttemptTest(topic)   // "check-<тема>"
+theoryCover(tickets): "all" | "some" | "none"   // сколько билетов темы с теорией — текст шага «новая тема»
 isSyntheticTest(pack, test): boolean     attemptSubject(pack, test): string | undefined
 ```
 

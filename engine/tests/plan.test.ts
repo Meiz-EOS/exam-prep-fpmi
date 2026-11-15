@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { BuiltPack, BuiltTest, BuiltTopic } from "../src/content/schema.ts";
 import { buildGraph, markTopic, topicStates, type TopicMarks } from "../src/core/graph.ts";
 import { placementKnown, type PlacementDoc } from "../src/core/placement.ts";
-import { ankiMinutes, attemptSubject, checkAttemptTest, checkMinutes, checkQuestions, checkResult, chooseSubject, dayFor, dayPatch, dayPlan, isSyntheticTest, oneMoreTopic, parseDayDoc, planSubject, type DayDoc, type PlanStep } from "../src/core/plan.ts";
+import { ankiMinutes, attemptSubject, checkAttemptTest, checkMinutes, checkQuestions, checkResult, chooseSubject, dayFor, dayPatch, dayPlan, isSyntheticTest, oneMoreTopic, parseDayDoc, planSubject, theoryCover, type DayDoc, type PlanStep } from "../src/core/plan.ts";
 import { subjectReady, type Attempt } from "../src/core/ready.ts";
 
 const topic = (id: string, subject: string, requires: string[] = [], extra: Partial<BuiltTopic> = {}): BuiltTopic => ({ id, subject, title: `T ${id}`, tickets: [`${id}-t1`, `${id}-t2`], requires, ...extra });
@@ -114,6 +114,9 @@ describe("dayPlan", () => {
     expect(plan.left).toBe(44);
     expect(plan.subjects).toEqual([{ id: "math", name: "Матан", open: 1 }, { id: "phys", name: "Физика", open: 0 }]);
     expect(build().steps.find((item) => item.id === "theory")).toMatchObject({ minutes: 8, tickets: [{ id: "a-t1", theory: true }, { id: "a-t2", theory: false }] });
+    expect(theoryCover(theory.tickets)).toBe("none");
+    expect(theoryCover(step(build(), "theory")!.tickets)).toBe("some");
+    expect(theoryCover([{ theory: true }, { theory: true }])).toBe("all");
   });
 
   it("takes the number of due cards from the agent's summary of today only", () => {

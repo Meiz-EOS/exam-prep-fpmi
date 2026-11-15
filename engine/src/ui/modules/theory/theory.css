@@ -26,3 +26,4 @@
 .theory-detail-levels span { display: flex; justify-content: space-between; gap: 4px; }
 .theory-detail-levels strong { color: var(--ink); font-family: var(--font-mono); }
 .theory-empty, .theory-missing { margin: 0; color: var(--muted); }
+.theory-missing-how { margin: 6px 0 0; }
