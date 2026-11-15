@@ -56,8 +56,50 @@ def mathjax(text: str) -> str:
                    for i, part in enumerate(parts))
 
 
-def content_hash(card: dict) -> str:
-    content = {key: card[key] for key in ("id", "deck", "subject", "tickets", "question", "answer", "source")}
+OFF_TOPIC = "00 Вне тем"
+
+
+def placement(pack: dict) -> dict[str, tuple[str, int]]:
+    """Card id → (full deck name, new-card position `due`), Р-87.
+
+    Subject with a graph: deck `zachetka::<subject>::<NN> <topic>` by the card's first ticket — the same string as
+    `topicDeck()` in engine/src/core/graph.ts; a card outside every topic goes to `…::00 Вне тем`.
+    Subject without a graph: `zachetka::<subject>::<deck>`, as before.
+    `due` grows in the order: subjects of the pack → topics (`pack["graph"]` is already in the canonical order and is
+    not re-sorted here) → place of the card's first ticket in the topic → order in `pack["cards"]`.
+    Positions are counted over all cards of the pack, so a partial build (--only-changed) gives the same numbers.
+    """
+    names = {subject["id"]: subject["name"] for subject in pack["subjects"]}
+    subject_place = {subject["id"]: place for place, subject in enumerate(pack["subjects"])}
+    graph = pack.get("graph") or []
+    remap = pack.get("remap") or {}
+    topics: dict[str, list[dict]] = {}
+    for topic in graph:
+        topics.setdefault(topic["subject"], []).append(topic)
+    # ticket → (number of its topic inside the subject, place of the ticket inside the topic, topic label)
+    ticket_place: dict[str, tuple[int, int, str]] = {}
+    for subject_topics in topics.values():
+        width = max(2, len(str(len(subject_topics))))
+        for number, topic in enumerate(subject_topics, start=1):
+            label = f"{number:0{width}d} {topic['title']}"
+            for place, ticket in enumerate(topic["tickets"]):
+                ticket_place[ticket] = (number, place, label)
+    keyed = []
+    for index, card in enumerate(pack.get("cards", [])):
+        subject = card["subject"]
+        if subject in topics:
+            first = card["tickets"][0] if card["tickets"] else None
+            number, place, label = ticket_place.get(remap.get(first, first), (0, 0, OFF_TOPIC))
+        else:
+            number, place, label = 0, 0, card["deck"]
+        keyed.append(((subject_place[subject], number, place, index), card["id"], f"zachetka::{names[subject]}::{label}"))
+    keyed.sort(key=lambda item: item[0])
+    return {card_id: (deck, due) for due, (_, card_id, deck) in enumerate(keyed)}
+
+
+def content_hash(card: dict, deck: str) -> str:
+    content = {key: card[key] for key in ("id", "subject", "tickets", "question", "answer", "source")}
+    content["deck"] = deck
     return hashlib.sha256(json.dumps(content, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
 
 
@@ -66,18 +108,20 @@ def build(pack: dict, output: Path, only_changed: bool = False) -> list[str]:
     card_list = pack.get("cards", [])
     state_path = root / "packs" / pack["id"] / "private" / "anki-built.json"
     previous = json.loads(state_path.read_text(encoding="utf-8")) if only_changed and state_path.exists() else {}
-    hashes = {card["id"]: content_hash(card) for card in card_list}
+    placed = placement(pack)
+    hashes = {card["id"]: content_hash(card, placed[card["id"]][0]) for card in card_list}
     selected = [card for card in card_list if not only_changed or previous.get(card["id"]) != hashes[card["id"]]]
-    subjects = {subject["id"]: subject["name"] for subject in pack["subjects"]}
+    selected.sort(key=lambda card: placed[card["id"]][1])
     grouped: dict[str, genanki.Deck] = {}
     for card in selected:
-        deck_name = f"zachetka::{subjects[card['subject']]}::{card['deck']}"
+        deck_name, due = placed[card["id"]]
         deck = grouped.setdefault(deck_name, genanki.Deck(stable_id(deck_name), deck_name))
         deck.add_note(genanki.Note(
             model=MODEL,
             fields=[mathjax(card["question"]), mathjax(card["answer"]), card["source"]],
             guid=guid(pack["id"], card["id"]),
             tags=list(card["tickets"]) + ["L0"],
+            due=due,  # genanki's default is 0 for every card, which leaves the order of new cards to Anki
         ))
     output.parent.mkdir(parents=True, exist_ok=True)
     genanki.Package(list(grouped.values())).write_to_file(str(output))
