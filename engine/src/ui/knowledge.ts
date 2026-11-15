@@ -31,10 +31,14 @@ export function useKnowledge(): Knowledge {
   const { pack, store, canWrite, onError } = useData();
   const [meta, setMeta] = useState<ReadonlyMap<string, Doc>>(new Map());
   const [attempts, setAttempts] = useState<Attempt[]>([]);
-  const [got, setGot] = useState({ meta: false, attempts: false });
+  // What has arrived, per store: a store that appears later (it is null on the first render) starts from «nothing
+  // loaded» in the very render it appears in — else the screens would write over a progress they have not read yet.
+  const [seen, setGot] = useState<{ store: typeof store; meta: boolean; attempts: boolean }>({ store, meta: false, attempts: false });
+  const got = seen.store === store ? seen : { store, meta: !store, attempts: !store };
   // One subscription per collection and store; never inside render paths that re-run (03-build.md#traps, 5).
   useEffect(() => {
-    if (!store) { setGot({ meta: true, attempts: true }); return; }
+    if (!store) { setGot({ store, meta: true, attempts: true }); return; }
+    setGot((now) => (now.store === store ? now : { store, meta: false, attempts: false }));
     const offMeta = store.subscribe("meta", (snap) => {
       setMeta(new Map(snap.docs.map((doc) => [doc.id, doc])));
       setGot((now) => (now.meta ? now : { ...now, meta: true }));
@@ -82,5 +86,5 @@ export function useKnowledge(): Knowledge {
       mark: (topic, want) => writeMarks(markTopic(pack, graph, { known: live.current.derived.known, marks: currentMarks(), attempts: live.current.attempts }, topic, want, new Date().toISOString())),
       markLearned: (topic) => writeMarks({ ...currentMarks(), [topic]: { state: "learned", at: new Date().toISOString() } }),
     };
-  }, [pack, store, canWrite, graph, meta, attempts, derived, got, ro]);
+  }, [pack, store, canWrite, graph, meta, attempts, derived, got.meta, got.attempts, ro]);
 }

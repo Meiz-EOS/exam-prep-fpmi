@@ -155,6 +155,17 @@ describe("daily plan with a graph", () => {
     expect(q("#plan-retry")).not.toBeNull();
   });
 
+  it("does not write over the stored day before it is read (the store connects after the first render)", async () => {
+    const date = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Moscow" }).format(new Date());
+    const at = new Date().toISOString();
+    await mount(Today, { meta: [
+      { id: "placement-m", subject: "m", startedAt: at, finishedAt: at, asked: [] },
+      { id: "day", date, subject: "m", topic: "a", done: { anki: at, theory: at }, finished: [] },
+    ] as Doc[] });
+    expect(await meta("day")).toMatchObject({ topic: "a", done: { anki: at, theory: at } });
+    expect(q('[data-step="theory"]').className).toContain("done");
+  });
+
   it("shows the agent's plan of today as a folded note and the due count in the Anki step", async () => {
     const date = moscowDate(new Date());
     await mount(Today, { meta: [{ id: "today", date, plan: [{ id: "p1", text: "Сделать лабу" }], anki: { at: new Date().toISOString(), due: 30, weak: [] } }, { id: "placement-m", subject: "m", startedAt: "x", finishedAt: "x", asked: [] }] });
