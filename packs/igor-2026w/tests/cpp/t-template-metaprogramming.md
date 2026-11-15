@@ -3,9 +3,23 @@ id: cpp-template-metaprogramming-test
 title: "C++ — специализации и метапрограммирование (вопросы 47–50)"
 kind: topic
 covers: [cpp-t-047, cpp-t-048, cpp-t-049, cpp-t-050]
-minutes: 24
-reuse: [cpp-q-025, cpp-q-026]
+minutes: 28
+reuse: [cpp-q-026, cpp-q-049]
 ---
+## cpp-q-025
+ticket: cpp-t-047 · level: L1
+Скомпилируется ли шаблон и что он напечатает?
+```cpp
+#include <iostream>
+template<class T> void show(T) { std::cout << "general"; }
+template<> void show<int>(int) { std::cout << "int"; }
+int main() { show(2); }
+```
+### Эталон
+- Код компилируется.
+- Вывод: `int`.
+- Для типа `int` используется явная специализация выбранного шаблона функции.
+
 ## cpp-q-415
 ticket: cpp-t-047 · level: L0
 Различите специализацию и перегрузку шаблонной функции. Что означает полная или частичная специализация шаблона класса?

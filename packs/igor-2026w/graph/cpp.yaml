@@ -1,0 +1,132 @@
+# Граф тем C++ (Р-81). Порядок тем в файле — порядок изучения.
+# requires — только прямые содержательные зависимости; «мягкие» (одна карточка
+# ссылается на более раннюю тему) обеспечены порядком файла.
+topics:
+  - id: cpp-g-basics
+    title: "Типы, выражения, управляющие инструкции, CE/RE/UB"
+    tickets: [cpp-t-002, cpp-t-004, cpp-t-005, cpp-t-006]
+
+  - id: cpp-g-build
+    title: "Сборка, объявления и определения, пространства имён"
+    tickets: [cpp-t-001, cpp-t-003, cpp-t-032, cpp-t-033]
+    requires: [cpp-g-basics]
+
+  - id: cpp-g-pointers
+    title: "Указатели, виды памяти, массивы"
+    tickets: [cpp-t-007, cpp-t-008, cpp-t-009]
+    requires: [cpp-g-basics]
+
+  - id: cpp-g-functions
+    title: "Функции, ссылки, константы, приведения типов"
+    tickets: [cpp-t-010, cpp-t-011, cpp-t-012, cpp-t-013, cpp-t-035]
+    requires: [cpp-g-pointers]
+
+  - id: cpp-g-classes
+    title: "Классы: конструкторы, деструкторы, константные и статические методы"
+    tickets: [cpp-t-014, cpp-t-015, cpp-t-036, cpp-t-017, cpp-t-039]
+    requires: [cpp-g-functions]
+
+  - id: cpp-g-rule-of-three
+    title: "Правило трёх и перегрузка операторов"
+    tickets: [cpp-t-016, cpp-t-037, cpp-t-038, cpp-t-040]
+    requires: [cpp-g-classes]
+
+  - id: cpp-g-memory
+    title: "new и delete, сложные объявления, выравнивание"
+    tickets: [cpp-t-034, cpp-t-071, cpp-t-085]
+    requires: [cpp-g-classes]
+
+  - id: cpp-g-inheritance
+    title: "Наследование"
+    tickets: [cpp-t-018, cpp-t-019, cpp-t-041, cpp-t-042, cpp-t-073]
+    requires: [cpp-g-classes]
+
+  - id: cpp-g-templates
+    title: "Шаблоны: основы, перегрузка, специализации"
+    tickets: [cpp-t-020, cpp-t-021, cpp-t-046, cpp-t-047]
+    requires: [cpp-g-rule-of-three]
+
+  - id: cpp-g-virtual
+    title: "Виртуальные функции, vtable, RTTI"
+    tickets: [cpp-t-022, cpp-t-023, cpp-t-045, cpp-t-044, cpp-t-076]
+    requires: [cpp-g-inheritance]
+
+  - id: cpp-g-multiple-inheritance
+    title: "Множественное и виртуальное наследование"
+    tickets: [cpp-t-043, cpp-t-074, cpp-t-075]
+    requires: [cpp-g-virtual]
+
+  - id: cpp-g-exceptions
+    title: "Исключения"
+    tickets: [cpp-t-024, cpp-t-051, cpp-t-052, cpp-t-053]
+    requires: [cpp-g-inheritance]
+
+  - id: cpp-g-containers
+    title: "Контейнеры, итераторы, auto, string_view"
+    tickets: [cpp-t-026, cpp-t-027, cpp-t-029, cpp-t-079, cpp-t-059]
+    requires: [cpp-g-templates]
+
+  - id: cpp-g-move
+    title: "Move-семантика, lvalue и rvalue"
+    tickets: [cpp-t-028, cpp-t-061, cpp-t-062]
+    requires: [cpp-g-containers]
+
+  - id: cpp-g-lambdas
+    title: "Лямбды и вызываемые объекты"
+    tickets: [cpp-t-030, cpp-t-067, cpp-t-094, cpp-t-070, cpp-t-072]
+    requires: [cpp-g-move]
+
+  - id: cpp-g-smart-pointers
+    title: "RAII и умные указатели"
+    tickets: [cpp-t-025, cpp-t-066, cpp-t-090, cpp-t-091]
+    requires: [cpp-g-exceptions, cpp-g-move]
+
+  - id: cpp-g-constexpr
+    title: "constexpr и вычисления при компиляции"
+    tickets: [cpp-t-031, cpp-t-048, cpp-t-100]
+    requires: [cpp-g-templates, cpp-g-exceptions]
+
+  - id: cpp-g-metafunctions
+    title: "Метафункции, variadic-шаблоны, свёртки"
+    tickets: [cpp-t-049, cpp-t-050, cpp-t-078]
+    requires: [cpp-g-templates]
+
+  - id: cpp-g-forwarding
+    title: "Perfect forwarding, decltype, xvalue и copy elision"
+    tickets: [cpp-t-063, cpp-t-086, cpp-t-064, cpp-t-087]
+    requires: [cpp-g-move, cpp-g-metafunctions]
+
+  - id: cpp-g-vector
+    title: "Устройство vector: реаллокация, итераторы, move_if_noexcept"
+    tickets: [cpp-t-055, cpp-t-054, cpp-t-065]
+    requires: [cpp-g-move, cpp-g-exceptions]
+
+  - id: cpp-g-containers-internals
+    title: "Устройство deque, list, map, unordered_map"
+    tickets: [cpp-t-056, cpp-t-057, cpp-t-058, cpp-t-080, cpp-t-081]
+    requires: [cpp-g-vector]
+
+  - id: cpp-g-allocators
+    title: "Аллокаторы, operator new и operator delete"
+    tickets: [cpp-t-060, cpp-t-084, cpp-t-082, cpp-t-083]
+    requires: [cpp-g-vector, cpp-g-forwarding]
+
+  - id: cpp-g-type-erasure
+    title: "Type erasure: any, делетер shared_ptr, устройство function"
+    tickets: [cpp-t-092, cpp-t-093, cpp-t-095]
+    requires: [cpp-g-smart-pointers, cpp-g-lambdas, cpp-g-virtual, cpp-g-allocators]
+
+  - id: cpp-g-sfinae
+    title: "SFINAE и метапрограммирование"
+    tickets: [cpp-t-068, cpp-t-096, cpp-t-097, cpp-t-098]
+    requires: [cpp-g-forwarding, cpp-g-virtual]
+
+  - id: cpp-g-concepts
+    title: "Ограничения requires и концепты"
+    tickets: [cpp-t-069, cpp-t-099]
+    requires: [cpp-g-sfinae]
+
+  - id: cpp-g-template-nuances
+    title: "Шаблонные параметры шаблонов, CTAD, tuple и structured bindings"
+    tickets: [cpp-t-077, cpp-t-088, cpp-t-089]
+    requires: [cpp-g-forwarding, cpp-g-inheritance]

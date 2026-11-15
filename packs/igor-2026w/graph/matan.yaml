@@ -1,0 +1,121 @@
+# Граф тем матана (Р-81). Порядок тем в файле — порядок изучения.
+# requires — только прямые зависимости: без них тему не понять.
+topics:
+  - id: matan-g-sets-functions
+    title: "Множества и функции"
+    tickets: [matan-t-0101, matan-t-0102, matan-t-0103]
+
+  - id: matan-g-real-axioms
+    title: "Аксиомы действительных чисел, модуль"
+    tickets: [matan-t-0104, matan-t-0105, matan-t-0106]
+    requires: [matan-g-sets-functions]
+
+  - id: matan-g-induction
+    title: "Натуральные числа: индукция, бином Ньютона"
+    tickets: [matan-t-0107, matan-t-0108, matan-t-0113]
+    requires: [matan-g-real-axioms]
+
+  - id: matan-g-sup
+    title: "Точные грани, аксиома Архимеда, промежутки"
+    tickets: [matan-t-0109, matan-t-0110, matan-t-0111, matan-t-0112, matan-t-0114]
+    requires: [matan-g-induction]
+
+  - id: matan-g-seq-limit
+    title: "Предел последовательности: определение, единственность, ограниченность"
+    tickets: [matan-t-0201, matan-t-0202, matan-t-0203]
+    requires: [matan-g-sup]
+
+  - id: matan-g-seq-props
+    title: "Свойства пределов: неравенства, арифметика, бесконечные пределы"
+    tickets: [matan-t-0204, matan-t-0205, matan-t-0206, matan-t-0210]
+    requires: [matan-g-seq-limit]
+
+  - id: matan-g-monotone
+    title: "Монотонные последовательности, вложенные отрезки"
+    tickets: [matan-t-0208, matan-t-0207, matan-t-0209]
+    requires: [matan-g-seq-props]
+
+  - id: matan-g-subseq
+    title: "Подпоследовательности: Больцано–Вейерштрасс, критерий Коши, верхний и нижний пределы"
+    tickets: [matan-t-0211, matan-t-0212, matan-t-0213, matan-t-0214]
+    requires: [matan-g-monotone]
+
+  - id: matan-g-cardinality
+    title: "Счётные и несчётные множества"
+    tickets: [matan-t-0410, matan-t-0411]
+    requires: [matan-g-monotone]
+
+  - id: matan-g-topology
+    title: "Открытые и замкнутые множества, лемма Гейне–Бореля"
+    tickets: [matan-t-0301, matan-t-0302, matan-t-0303, matan-t-0304]
+    requires: [matan-g-monotone]
+
+  - id: matan-g-func-limit
+    title: "Предел функции"
+    tickets: [matan-t-0401, matan-t-0416, matan-t-0402, matan-t-0403]
+    requires: [matan-g-subseq, matan-g-topology]
+
+  - id: matan-g-continuity
+    title: "Непрерывность в точке"
+    tickets: [matan-t-0404, matan-t-0405, matan-t-0406]
+    requires: [matan-g-func-limit]
+
+  - id: matan-g-discont
+    title: "Точки разрыва, разрывы монотонной функции"
+    tickets: [matan-t-0417, matan-t-0418]
+    requires: [matan-g-continuity, matan-g-cardinality]
+
+  - id: matan-g-cont-global
+    title: "Непрерывные функции на отрезке, обратная функция"
+    tickets: [matan-t-0407, matan-t-0408, matan-t-0409, matan-t-0412]
+    requires: [matan-g-continuity]
+
+  - id: matan-g-elementary
+    title: "Экспонента, замечательные пределы, сравнение функций"
+    tickets: [matan-t-0413, matan-t-0414, matan-t-0415, matan-t-0419]
+    requires: [matan-g-cont-global]
+
+  - id: matan-g-derivative
+    title: "Производная и правила дифференцирования"
+    tickets: [matan-t-0501, matan-t-0502, matan-t-0503, matan-t-0519, matan-t-0504, matan-t-0518]
+    requires: [matan-g-elementary]
+
+  - id: matan-g-mean-value
+    title: "Теоремы о среднем"
+    tickets: [matan-t-0505, matan-t-0506, matan-t-0507, matan-t-0508, matan-t-0520]
+    requires: [matan-g-derivative]
+
+  - id: matan-g-mono-lhopital
+    title: "Монотонность, первообразные, правило Лопиталя"
+    tickets: [matan-t-0509, matan-t-0517, matan-t-0510]
+    requires: [matan-g-mean-value]
+
+  - id: matan-g-taylor
+    title: "Формула Тейлора"
+    tickets: [matan-t-0511, matan-t-0512, matan-t-0513]
+    requires: [matan-g-mono-lhopital]
+
+  - id: matan-g-convexity
+    title: "Выпуклость и неравенства"
+    tickets: [matan-t-0514, matan-t-0515, matan-t-0516]
+    requires: [matan-g-mono-lhopital]
+
+  - id: matan-g-riemann
+    title: "Интеграл Римана: определение, критерии, свойства"
+    tickets: [matan-t-0601, matan-t-0602, matan-t-0603, matan-t-0604, matan-t-0605, matan-t-0609]
+    requires: [matan-g-cont-global]
+
+  - id: matan-g-newton-leibniz
+    title: "Формула Ньютона–Лейбница, интегрирование по частям"
+    tickets: [matan-t-0606, matan-t-0607, matan-t-0608]
+    requires: [matan-g-riemann, matan-g-mono-lhopital]
+
+  - id: matan-g-complex-basic
+    title: "Комплексные числа и корни"
+    tickets: [matan-t-0701, matan-t-0702]
+    requires: [matan-g-induction]
+
+  - id: matan-g-complex-analysis
+    title: "Основная теорема алгебры, комплексная экспонента"
+    tickets: [matan-t-0703, matan-t-0704]
+    requires: [matan-g-complex-basic, matan-g-taylor]

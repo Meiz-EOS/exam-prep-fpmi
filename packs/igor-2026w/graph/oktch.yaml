@@ -1,0 +1,120 @@
+# Граф тем ОКТЧ (Р-81). Порядок тем в файле — порядок изучения.
+# Внутри темы пункты «на двойку» (dNN — определения и формулировки) стоят перед билетами с доказательствами.
+topics:
+  - id: oktch-g-sets
+    title: "Множества и операции над ними"
+    tickets: [oktch-t-d01, oktch-t-001, oktch-t-d02, oktch-t-d03, oktch-t-d04, oktch-t-002]
+
+  - id: oktch-g-correspondences
+    title: "Декартово произведение, соответствия и отображения"
+    tickets: [oktch-t-d05, oktch-t-003, oktch-t-d06, oktch-t-004, oktch-t-005]
+    requires: [oktch-g-sets]
+
+  - id: oktch-g-mappings
+    title: "Биекции, образы и прообразы, композиция"
+    tickets: [oktch-t-006, oktch-t-007, oktch-t-008]
+    requires: [oktch-g-correspondences]
+
+  - id: oktch-g-countable
+    title: "Равномощность и счётные множества"
+    tickets: [oktch-t-d07, oktch-t-d08, oktch-t-d09, oktch-t-d10, oktch-t-009]
+    requires: [oktch-g-mappings]
+
+  - id: oktch-g-cantor
+    title: "Бесконечные множества, континуум, теорема Кантора для счётных множеств"
+    tickets: [oktch-t-d12, oktch-t-010, oktch-t-d11, oktch-t-011]
+    requires: [oktch-g-countable]
+
+  - id: oktch-g-continuum
+    title: "Степени множеств, континуум, теоремы Кантора и Кантора–Бернштейна"
+    tickets: [oktch-t-034, oktch-t-037, oktch-t-059, oktch-t-035, oktch-t-036]
+    requires: [oktch-g-cantor]
+
+  - id: oktch-g-equivalence
+    title: "Бинарные отношения и отношение эквивалентности"
+    tickets: [oktch-t-d13, oktch-t-d14, oktch-t-012]
+    requires: [oktch-g-correspondences]
+
+  - id: oktch-g-orders
+    title: "Частичные и линейные порядки, диаграммы Хассе, изоморфизм"
+    tickets: [oktch-t-d15, oktch-t-013, oktch-t-d16, oktch-t-d17, oktch-t-014]
+    requires: [oktch-g-equivalence, oktch-g-mappings]
+
+  - id: oktch-g-preorders
+    title: "Предпорядки, плотный порядок, операции над порядками"
+    tickets: [oktch-t-015, oktch-t-016, oktch-t-038, oktch-t-039]
+    requires: [oktch-g-orders, oktch-g-countable]
+
+  - id: oktch-g-counting
+    title: "Правила сложения и умножения, размещения и сочетания"
+    tickets: [oktch-t-d18, oktch-t-017, oktch-t-d21, oktch-t-d22, oktch-t-018]
+    requires: [oktch-g-correspondences]
+
+  - id: oktch-g-pigeonhole
+    title: "Принцип Дирихле и задача о раскраске"
+    tickets: [oktch-t-d19, oktch-t-060, oktch-t-d20, oktch-t-040]
+    requires: [oktch-g-counting]
+
+  - id: oktch-g-binomial
+    title: "Бином Ньютона и биномиальные тождества"
+    tickets: [oktch-t-d23, oktch-t-d24, oktch-t-019, oktch-t-d25, oktch-t-020, oktch-t-041, oktch-t-056]
+    requires: [oktch-g-counting]
+
+  - id: oktch-g-inclusion
+    title: "Формула включений и исключений"
+    tickets: [oktch-t-d26, oktch-t-043, oktch-t-021, oktch-t-022, oktch-t-042, oktch-t-044]
+    requires: [oktch-g-binomial]
+
+  - id: oktch-g-mobius
+    title: "Функция Мёбиуса, формула обращения, функция Эйлера"
+    tickets: [oktch-t-d27, oktch-t-d28, oktch-t-023, oktch-t-d29, oktch-t-045, oktch-t-046]
+    requires: [oktch-g-inclusion]
+
+  - id: oktch-g-cyclic
+    title: "Циклические последовательности"
+    tickets: [oktch-t-d30, oktch-t-d31, oktch-t-024, oktch-t-d32, oktch-t-047, oktch-t-061]
+    requires: [oktch-g-mobius, oktch-g-equivalence]
+
+  - id: oktch-g-poset-mobius
+    title: "Функция Мёбиуса на частично упорядоченном множестве"
+    tickets: [oktch-t-d37, oktch-t-025, oktch-t-048, oktch-t-049]
+    requires: [oktch-g-orders, oktch-g-mobius]
+
+  - id: oktch-g-poset-inversion
+    title: "Обращение Мёбиуса на частично упорядоченном множестве и включения-исключения"
+    tickets: [oktch-t-062, oktch-t-063, oktch-t-064, oktch-t-065]
+    requires: [oktch-g-poset-mobius]
+
+  - id: oktch-g-partitions
+    title: "Разбиения чисел на слагаемые, диаграммы Юнга"
+    tickets: [oktch-t-d33, oktch-t-d34, oktch-t-026, oktch-t-027, oktch-t-d35, oktch-t-d36, oktch-t-028]
+    requires: [oktch-g-counting]
+
+  - id: oktch-g-recurrences
+    title: "Линейные рекуррентные соотношения, числа Фибоначчи"
+    tickets: [oktch-t-d40, oktch-t-d41, oktch-t-d39, oktch-t-029, oktch-t-050, oktch-t-051]
+
+  - id: oktch-g-series
+    title: "Формальные степенные ряды"
+    tickets: [oktch-t-d38, oktch-t-053, oktch-t-030, oktch-t-031, oktch-t-054, oktch-t-055]
+    requires: [oktch-g-binomial]
+
+  - id: oktch-g-genfunc
+    title: "Производящие функции и радиус сходимости"
+    tickets: [oktch-t-d43, oktch-t-d42, oktch-t-057, oktch-t-032, oktch-t-d44]
+    requires: [oktch-g-series, oktch-g-recurrences]
+
+  - id: oktch-g-catalan
+    title: "Числа Каталана"
+    tickets: [oktch-t-d45, oktch-t-033, oktch-t-066, oktch-t-067]
+    requires: [oktch-g-genfunc]
+
+  - id: oktch-g-partition-series
+    title: "Производящие функции разбиений, теорема Эйлера о произведении"
+    tickets: [oktch-t-068, oktch-t-052]
+    requires: [oktch-g-partitions, oktch-g-series]
+
+  - id: oktch-g-egz
+    title: "Проблема Эрдёша–Гинзбурга–Зива"
+    tickets: [oktch-t-058, oktch-t-069, oktch-t-070, oktch-t-071, oktch-t-072, oktch-t-073]
+    requires: [oktch-g-binomial]

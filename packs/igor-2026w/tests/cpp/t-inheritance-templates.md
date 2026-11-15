@@ -4,7 +4,7 @@ title: "C++ — наследование и шаблоны (вопросы 18–
 kind: topic
 covers: [cpp-t-018, cpp-t-019, cpp-t-020, cpp-t-021]
 minutes: 24
-reuse: [cpp-q-011]
+reuse: [cpp-q-039]
 ---
 ## cpp-q-207
 ticket: cpp-t-018 · level: L0

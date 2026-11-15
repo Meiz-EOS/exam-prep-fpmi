@@ -4,8 +4,25 @@ title: "C++ — контейнеры и представления (вопрос
 kind: topic
 covers: [cpp-t-055, cpp-t-056, cpp-t-057, cpp-t-058, cpp-t-059]
 minutes: 30
-reuse: [cpp-q-027]
+reuse: []
 ---
+## cpp-q-027
+ticket: cpp-t-059 · level: L1
+Определите проблему времени жизни в коде.
+```cpp
+#include <string>
+#include <string_view>
+std::string_view make() {
+    std::string s = "hello";
+    return s;
+}
+int main() { auto v = make(); }
+```
+### Эталон
+- Код компилируется, но возвращённый `string_view` не владеет символами.
+- Локальная строка `s` уничтожается при выходе из `make`.
+- После возврата `v` содержит висячее представление; обращение к его символам даёт UB.
+
 ## cpp-q-508
 ticket: cpp-t-055 · level: L0
 Назовите основные характеристики `std::vector`: что означают `size` и `capacity`, и что гарантирует `reserve`?
