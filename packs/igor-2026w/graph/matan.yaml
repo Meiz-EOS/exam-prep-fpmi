@@ -93,7 +93,7 @@ topics:
   - id: matan-g-taylor
     title: "Формула Тейлора"
     tickets: [matan-t-0511, matan-t-0512, matan-t-0513]
-    requires: [matan-g-mono-lhopital]
+    requires: [matan-g-mean-value]
 
   - id: matan-g-convexity
     title: "Выпуклость и неравенства"
