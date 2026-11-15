@@ -14,10 +14,17 @@ topics:
     tickets: [aig-t-0303, aig-t-0401, aig-t-0402, aig-t-0501]
     requires: [aig-g-vectors, aig-g-matrices]
 
+  # Отдельная тема: определители 2-го и 3-го порядка нужны и объёму, и инвариантам кривых,
+  # а ориентация и объём кривым не нужны.
+  - id: aig-g-det3
+    title: "Определители 2-го и 3-го порядка, правило Крамера"
+    tickets: [aig-t-0601]
+    requires: [aig-g-matrices]
+
   - id: aig-g-volume
-    title: "Правило Крамера, ориентация, ориентированный объём"
-    tickets: [aig-t-0601, aig-t-0701, aig-t-0702]
-    requires: [aig-g-coords-dot]
+    title: "Ориентация, ориентированный объём"
+    tickets: [aig-t-0701, aig-t-0702]
+    requires: [aig-g-coords-dot, aig-g-det3]
 
   - id: aig-g-cross
     title: "Векторное произведение"
@@ -42,7 +49,7 @@ topics:
   - id: aig-g-invariants
     title: "Инварианты и центр кривой второго порядка"
     tickets: [aig-t-1602, aig-t-1603, aig-t-1701]
-    requires: [aig-g-curves-class, aig-g-volume]
+    requires: [aig-g-curves-class, aig-g-det3]
 
   - id: aig-g-conics
     title: "Эллипс, гипербола, парабола: фокусы и директрисы"
@@ -68,10 +75,12 @@ topics:
     tickets: [aig-t-2102, aig-t-2103, aig-t-2106]
     requires: [aig-g-groups]
 
+  # Из алгебры нужно только понятие абелевой группы и слово «поле»; вычеты, характеристика
+  # и простое подполе линейным пространствам не нужны (они нужны определителю и конечным полям).
   - id: aig-g-linspace
     title: "Линейные пространства, подпространства, линейная оболочка"
     tickets: [aig-t-2201, aig-t-2202, aig-t-2203]
-    requires: [aig-g-fields, aig-g-vectors]
+    requires: [aig-g-groups, aig-g-vectors]
 
   - id: aig-g-basis-dim
     title: "Базис и размерность, изоморфизм с Fⁿ"
@@ -126,4 +135,4 @@ topics:
   - id: aig-g-field-ext
     title: "Конечные поля и поле ℂ"
     tickets: [aig-t-2303, aig-t-3601]
-    requires: [aig-g-basis-dim, aig-g-matrices]
+    requires: [aig-g-basis-dim, aig-g-fields, aig-g-matrices]
