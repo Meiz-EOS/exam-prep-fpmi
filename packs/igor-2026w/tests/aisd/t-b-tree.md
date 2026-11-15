@@ -3,8 +3,8 @@ id: aisd-t-b-tree
 title: "АиСД — B-дерево (вопросы 72–75)"
 kind: topic
 covers: [aisd-t-072, aisd-t-073, aisd-t-074, aisd-t-075]
-minutes: 24
-reuse: [aisd-q-039]
+minutes: 28
+reuse: [aisd-q-039, aisd-q-058]
 ---
 ## aisd-q-609
 ticket: aisd-t-072 · level: L0

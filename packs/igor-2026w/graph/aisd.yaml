@@ -22,7 +22,7 @@ topics:
   - id: aisd-g-linear-sorts
     title: "Сортировка подсчётом и цифровая сортировка"
     tickets: [aisd-t-015, aisd-t-016]
-    requires: [aisd-g-sort-lower-bound]
+    requires: [aisd-g-merge-sort]
 
   - id: aisd-g-lists
     title: "Списки, стек и очередь на списке"
@@ -42,7 +42,7 @@ topics:
   - id: aisd-g-heapsort
     title: "Построение кучи за линейное время и Heap Sort"
     tickets: [aisd-t-028, aisd-t-029]
-    requires: [aisd-g-heap, aisd-g-sort-lower-bound]
+    requires: [aisd-g-heap, aisd-g-merge-sort]
 
   - id: aisd-g-binomial
     title: "Биномиальная куча"
@@ -57,7 +57,7 @@ topics:
   - id: aisd-g-segtree
     title: "Sparse Table и дерево отрезков"
     tickets: [aisd-t-037, aisd-t-038, aisd-t-039, aisd-t-040]
-    requires: [aisd-g-heap]
+    requires: [aisd-g-model]
 
   - id: aisd-g-segtree-advanced
     title: "Дерево отрезков: Fractional Cascading, динамическое дерево, сжатие координат"
@@ -72,12 +72,12 @@ topics:
   - id: aisd-g-fenwick
     title: "Дерево Фенвика"
     tickets: [aisd-t-047, aisd-t-048, aisd-t-049, aisd-t-050]
-    requires: [aisd-g-segtree]
+    requires: [aisd-g-model]
 
   - id: aisd-g-bst
     title: "Дерево поиска и AVL-дерево"
     tickets: [aisd-t-051, aisd-t-052, aisd-t-053, aisd-t-054]
-    requires: [aisd-g-heap, aisd-g-lists]
+    requires: [aisd-g-lists]
 
   - id: aisd-g-splay
     title: "Splay-дерево, метод потенциалов, неявный ключ"
@@ -97,7 +97,7 @@ topics:
   - id: aisd-g-skip-treap
     title: "Skip List и декартово дерево"
     tickets: [aisd-t-068, aisd-t-069, aisd-t-070, aisd-t-071]
-    requires: [aisd-g-bst, aisd-g-stack-algos]
+    requires: [aisd-g-bst, aisd-g-heap, aisd-g-stack-algos]
 
   - id: aisd-g-b-tree
     title: "B-дерево"

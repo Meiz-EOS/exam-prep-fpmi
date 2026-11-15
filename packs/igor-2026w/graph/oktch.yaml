@@ -97,7 +97,6 @@ topics:
   - id: oktch-g-series
     title: "Формальные степенные ряды"
     tickets: [oktch-t-d38, oktch-t-053, oktch-t-030, oktch-t-031, oktch-t-054, oktch-t-055]
-    requires: [oktch-g-binomial]
 
   - id: oktch-g-genfunc
     title: "Производящие функции и радиус сходимости"
@@ -107,7 +106,7 @@ topics:
   - id: oktch-g-catalan
     title: "Числа Каталана"
     tickets: [oktch-t-d45, oktch-t-033, oktch-t-066, oktch-t-067]
-    requires: [oktch-g-genfunc]
+    requires: [oktch-g-genfunc, oktch-g-binomial]
 
   - id: oktch-g-partition-series
     title: "Производящие функции разбиений, теорема Эйлера о произведении"
